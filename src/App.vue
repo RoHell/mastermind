@@ -189,7 +189,7 @@ main {
   position: absolute;
 }
 
-.mastermind__target-numbers::v-deep .number-wrapper__digit {
+.mastermind__target-numbers:deep(.number-wrapper__digit) {
   border: 1px solid;
   background-color: rgba(white, 0.5);
   width: 2.4rem;

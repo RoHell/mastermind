@@ -80,12 +80,9 @@ const validate = (event: Event, index: number) => {
 </template>
 
 <style lang="scss" scoped>
-
-.number-wrapper::v-deep {
-  .number-wrapper__digits {
+  .number-wrapper:deep(.number-wrapper__digits) {
     background-image: linear-gradient(transparent, var(--background-color) 20%, var(--background-color) 80%, transparent);
   }
-}
 .number-picker {
   &__submit {
     background-color: var(--background-color);
