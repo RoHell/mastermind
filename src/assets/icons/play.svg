@@ -1,4 +1,4 @@
-<svg fill="rgba(255, 255, 255, 0.87)" height="800px" width="800px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+<svg fill="var(--text-color)" height="800px" width="800px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
 	 viewBox="0 0 485 485" xml:space="preserve">
 <g>
 	<path d="M0,0v485h485V0H0z M455,455H30V30h425V455z"/>

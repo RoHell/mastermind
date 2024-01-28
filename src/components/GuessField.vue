@@ -1,110 +1,37 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import useNumbers from '../composables/useNumbers'
-
-interface FieldInterface {
-  id?: string
-  numbers: number[] | null[]
-  points: number | null
-}
+import { HitInterface } from '../types';
 
 interface Props {
-  field: FieldInterface
+  field: HitInterface
   round: number
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const emit = defineEmits(['submit'])
-
-const { NUMBERS_COUNT, MIN, MAX } = useNumbers()
-
-const digits = ref<number[] | null[]>(Array(NUMBERS_COUNT).fill(null))
-
-const isDisabled = computed(() => digits.value.some(digit => digit === null))
-
-const isCurrentField = computed(() => props.field.points !== null)
-
-const onSubmit = () => {
-  emit('submit', digits.value)
-}
-
-const validate = (value: number, index: number) => {
-  if (value > MAX) digits.value[index] = Number(String(digits.value[index]).slice(-1))
-  if (value < MIN) digits.value[index] = MIN
-}
-
-watch(() => props.field.numbers, (value) => {
-  if (value.every(v => v === null)) {
-    digits.value = Array(NUMBERS_COUNT).fill(null)
-  }
-})
 
 </script>
 
 <template>
   <div class="number-picker">
     <div class="number-picker__round">
-      <span v-if="isCurrentField">{{ round }}.</span>
+      <span>{{ round }}.</span>
     </div>
     <div class="number-picker__digits">
       <div
-        v-for="(_, index) in field.numbers"
+        v-for="(number, index) in field.numbers"
         :key="index"
         class="number-picker__digit"
       >
-        <button
-          v-if="!isCurrentField"
-          :disabled="digits[index] >= MAX"
-          @click="digits[index]++"
-        >
-          <img
-            src="../assets/icons/chevron-up.svg"
-            class="number-picker__chevron"
-            :class="{
-              'number-picker__chevron--disabled': digits[index] >= MAX
-            }"
-          />
-        </button>
         <input
-          v-model="digits[index]"
+          :value="number"
           type="number"
-          :max="MAX"
-          :min="MIN"
-          :disabled="isCurrentField"
-          :tabindex="index"
-          @input="validate($event.target.value, index)"
+          disabled
         />
-        <button
-          v-if="!isCurrentField"
-          :disabled="digits[index] <= MIN && digits[index] !== null"
-          @click="digits[index] === null ? digits[index] = MIN : digits[index]--"
-        >
-          <img
-            src="../assets/icons/chevron-down.svg"
-            class="number-picker__chevron"
-            :class="{
-              'number-picker__chevron--disabled': digits[index] <= MIN && digits[index] !== null
-            }"
-          />
-        </button>
       </div>
     </div>
     <div class="number-picker__action">
-      <div v-if="isCurrentField" class="number-picker__points">{{ field.points?.toFixed(1) }}</div>
-      <button
-        v-else
-        @click="onSubmit"
-        :disabled="isDisabled"
-      >
-        <img
-          src="../assets/icons/play.svg"
-          class="number-picker__submit"
-          :class="{
-            'number-picker__submit--disabled': isDisabled
-          }"
-        >
-      </button>
+      <div class="number-picker__points">{{ field.points?.toFixed(1) }}</div>
     </div>
   </div>
 </template>
@@ -142,23 +69,6 @@ watch(() => props.field.numbers, (value) => {
     display: flex;
     place-content: center;
     align-items: center;
-  }
-
-  &__submit {
-    width: 2.3rem;
-    height: 2.3rem;
-  }
-
-  &__chevron {
-    width: 2rem;
-    height: 2rem;
-  }
-
-  &__chevron, &__submit {
-    &--disabled {
-      pointer-events: none;
-      opacity: 0.5;
-    }
   }
 
   &__points {
