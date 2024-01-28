@@ -1,43 +1,34 @@
 <script setup lang="ts">
-import { HitInterface } from '../types';
-
 interface Props {
-  field: HitInterface
-  round: number
+  numbers: number[]
 }
 
 defineProps<Props>()
-
-const emit = defineEmits(['submit'])
-
 </script>
 
 <template>
-  <div class="number-picker">
-    <div class="number-picker__round">
-      <span>{{ round }}.</span>
+  <div class="number-wrapper">
+    <div class="number-wrapper__left">
+      <slot name="left" />
     </div>
-    <div class="number-picker__digits">
+    <div class="number-wrapper__digits">
       <div
-        v-for="(number, index) in field.numbers"
+        v-for="(number, index) in numbers"
         :key="index"
-        class="number-picker__digit"
+        class="number-wrapper__digit"
       >
-        <input
-          :value="number"
-          type="number"
-          disabled
-        />
-      </div>
+
+        <slot name="number" :number="number" :index="index" />
     </div>
-    <div class="number-picker__action">
-      <div class="number-picker__points">{{ field.points?.toFixed(1) }}</div>
+    </div>
+    <div class="number-wrapper__right">
+      <slot name="right" />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.number-picker {
+.number-wrapper {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -49,11 +40,12 @@ const emit = defineEmits(['submit'])
     align-items: center;
     gap: 0.5rem;
 
-    input {
+    :slotted(input) {
       font-size: 1.5rem;
       text-align: center;
-      width: 2rem;
-      height: 2rem;
+      width: 2.3rem;
+      height: 2.3rem;
+      border: 1px solid;
     }
   }
 
@@ -63,7 +55,7 @@ const emit = defineEmits(['submit'])
     align-items: center;
   }
 
-  &__round {
+  &__left {
     width: 2.3rem;
     height: 2.3rem;
     display: flex;
@@ -71,25 +63,22 @@ const emit = defineEmits(['submit'])
     align-items: center;
   }
 
-  &__points {
+  &__right {
+    left: 100%;
     font-size: 1.5rem;
     width: 2.3rem;
     height: 2.3rem;
   }
-
-  &__action {
-    left: 100%;
-  }
 }
 /* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+:slotted(input::-webkit-outer-spin-button),
+:slotted(input::-webkit-inner-spin-button) {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+:slotted(input[type=number]) {
   -moz-appearance: textfield;
 }
 </style>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import TopBar from './components/TopBar.vue'
-import GuessField from './components/GuessField.vue'
+import NumberHits from './components/NumberHits.vue'
 import NumberPicker from './components/NumberPicker.vue'
+import NumberWrapper from './components/NumberWrapper.vue'
 
 import { useNumbers } from './composables'
 import { HitInterface } from './types'
@@ -11,7 +12,7 @@ const { NUMBERS_COUNT, NUMBERS_RANGE, hits } = useNumbers()
 
 const targetNumbers = ref<number[]>([])
 
-const current = computed<HitInterface>(() => hits.value[0])
+const showTargetNumber = computed(() => hits.value[0]?.points && (hits.value[0].points >= NUMBERS_COUNT))
 
 const generateTargetNumber = () => {
   targetNumbers.value = Array.from({ length: NUMBERS_COUNT }, () => Math.floor(Math.random() * NUMBERS_RANGE))
@@ -46,20 +47,6 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
     }"
   >
     <TopBar class="mastermind__top-bar">
-      <div v-if="targetNumbers.length" class="mastermind__target">
-        <span
-          v-if="current?.points && (current.points >= NUMBERS_COUNT)"
-          v-for="number in targetNumbers"
-          class="top-bar__digit"
-        >
-          {{ number }}
-        </span>
-        <span
-          v-else
-          v-for="_ in NUMBERS_COUNT"
-          class="top-bar__digit"
-        >?</span>
-      </div>
       <template #left>
         <button
           v-if="targetNumbers.length && hits.length"
@@ -69,6 +56,19 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
           <img src="./assets/icons/reload.svg" width="18" height="18" />
         </button>
       </template>
+
+      <div v-if="targetNumbers.length" class="mastermind__target">
+        <NumberWrapper
+          class="mastermind__target-numbers"
+          :numbers="showTargetNumber ? targetNumbers : Array(NUMBERS_COUNT)"
+        >
+          <template #number="{ number }">
+            <span v-if="showTargetNumber">{{ number }}</span>
+            <span v-else>?</span>
+          </template>
+        </NumberWrapper>
+      </div>
+
       <template #right>
         <button
           class="top-bar__action"
@@ -79,11 +79,11 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
       </template>
     </TopBar>
   </header>
+
   <main>
     <div v-if="targetNumbers.length" class="mastermind__fields">
-      
       <TransitionGroup name="list" tag="div" class="mastermind__rounds">
-        <GuessField
+        <NumberHits
           v-for="(field, index) in hits"
           :key="hits.length - index"
           :field="field"
@@ -189,7 +189,7 @@ main {
   position: absolute;
 }
 
-.top-bar__digit {
+.mastermind__target-numbers::v-deep .number-wrapper__digit {
   border: 1px solid;
   background-color: rgba(white, 0.5);
   width: 2.4rem;
