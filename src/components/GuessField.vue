@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import useNumbers from '../composables/useNumbers'
 
 interface FieldInterface {
   id?: string
-  digits: number[] | null[]
+  numbers: number[] | null[]
   points: number | null
 }
 
@@ -14,12 +15,11 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const MAX = 9
-const MIN = 0
-
 const emit = defineEmits(['submit'])
 
-const digits = ref<number[] | null[]>([null, null, null, null])
+const { NUMBERS_COUNT, MIN, MAX } = useNumbers()
+
+const digits = ref<number[] | null[]>(Array(NUMBERS_COUNT).fill(null))
 
 const isDisabled = computed(() => digits.value.some(digit => digit === null))
 
@@ -34,9 +34,9 @@ const validate = (value: number, index: number) => {
   if (value < MIN) digits.value[index] = MIN
 }
 
-watch(() => props.field.digits, (value) => {
+watch(() => props.field.numbers, (value) => {
   if (value.every(v => v === null)) {
-    digits.value = [null, null, null, null]
+    digits.value = Array(NUMBERS_COUNT).fill(null)
   }
 })
 
@@ -49,7 +49,7 @@ watch(() => props.field.digits, (value) => {
     </div>
     <div class="number-picker__digits">
       <div
-        v-for="(_, index) in field.digits"
+        v-for="(_, index) in field.numbers"
         :key="index"
         class="number-picker__digit"
       >

@@ -3,20 +3,24 @@ import { computed, ref } from 'vue'
 import TopBar from './components/TopBar.vue'
 import GuessField from './components/GuessField.vue'
 
+import useNumbers from './composables/useNumbers'
+
 interface FieldInterface {
   id?: string
-  digits: number[] | null[]
+  numbers: number[] | null[]
   points: number | null
 }
 
-const NUMBERS_COUNT = 4
+const { NUMBERS_COUNT, NUMBERS_RANGE } = useNumbers()
+
+const showAnswer = ref(false)
 
 const blankField = {
-  digits: [null, null, null, null],
+  numbers: Array(NUMBERS_COUNT).fill(null),
   points: null
 }
 
-const randomDigits = ref<number[]>([])
+const targetNumbers = ref<number[]>([])
 
 const guessFields = ref<FieldInterface[]>([])
 
@@ -26,25 +30,30 @@ const current = computed<FieldInterface>({
 })
 
 const generateRandomDigits = () => {
-  randomDigits.value = Array.from({ length: NUMBERS_COUNT }, () => Math.floor(Math.random() * 10))
+  targetNumbers.value = Array.from({ length: NUMBERS_COUNT }, () => Math.floor(Math.random() * NUMBERS_RANGE))
 };
 
 const addBlankField = () => guessFields.value.push({...blankField})
 
 const startGame = () => {
   guessFields.value = []
+  showAnswer.value = false
   generateRandomDigits()
   addBlankField()
 }
 
-const calculatePoints = (digits: number[]) => {
-  current.value.digits = digits
-  let points = 0
-  randomDigits.value?.forEach((digit: number, index: number) => {
-    if (digits.includes(digit)) points += 0.5
-    if (digits[index] === randomDigits.value[index]) points += 0.5
+const calculatePoints = (shotNumbers: number[]) => {
+  let hits: number[] = Array(NUMBERS_COUNT).fill(0)
+
+  targetNumbers.value?.forEach((targetNumber: number, index: number) => {
+    if (shotNumbers[index] === targetNumbers.value[index]) return hits[index] = 1
+
+    const dI = shotNumbers.findIndex(shotNumber => shotNumber === targetNumber)
+    if (dI > -1 && hits[dI] === 0) hits[dI] = 0.5
   })
 
+  const points = hits.reduce((a, b) => a + b, 0)
+  current.value.numbers = shotNumbers
   current.value.points = points
   addBlankField()
 }
@@ -52,10 +61,25 @@ const calculatePoints = (digits: number[]) => {
 
 <template>
   <header>
-    <TopBar :digits="current?.points !== 4 ? randomDigits : []">
+    <TopBar class="mastermind__top-bar">
+
+      <div v-if="targetNumbers.length" class="mastermind__target">
+        <span
+        v-if="current.points"
+          v-for="number in targetNumbers"
+          class="top-bar__digit"
+        >
+          {{ number }}
+        </span>
+        <span
+          v-else
+          v-for="_ in NUMBERS_COUNT"
+          class="top-bar__digit"
+        >*</span>
+      </div>
       <template #right>
         <button
-          v-if="randomDigits.length"
+          v-if="targetNumbers.length"
           class="top-bar__action"
           @click="startGame"
         >
@@ -65,14 +89,15 @@ const calculatePoints = (digits: number[]) => {
     </TopBar>
   </header>
   <main>
-    <div v-if="randomDigits.length" class="mastermind__fields">
-      <GuessField
-        v-for="(field, index) in guessFields"
-        :field="field"
-        :round="index + 1"
-        :reset="!guessFields.length"
-        @submit="calculatePoints"
-      />
+    <div v-if="targetNumbers.length" class="mastermind__fields">
+      <div class="mastermind__rounds">
+        <GuessField
+          v-for="(field, index) in guessFields"
+          :field="field"
+          :round="index + 1"
+          @submit="calculatePoints"
+        />
+      </div>
     </div>
     <button v-else class="mastermind__play" @click="startGame">Play</button>
   </main>
@@ -104,33 +129,55 @@ main {
   box-sizing: border-box;
 }
 
-.mastermind__fields {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  overflow: auto;
-  width: 100%;
-  height: 100%;
-}
-
-.mastermind__play {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-  margin: auto;
-  &:hover {
-    border-color: #646cff;
+.mastermind {
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
   }
-  &:focus,
-  &:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
+  &__rounds {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: auto;
+    overflow: auto;
+  }
+  &__play {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    margin: auto;
+    &:hover {
+      border-color: #646cff;
+    }
+    &:focus,
+    &:focus-visible {
+      outline: 4px auto -webkit-focus-ring-color;
+    }
+  }
+
+  &__top-bar {
+    position: relative;
+  }
+
+  &__target {
+    font-weight: 700;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 2rem;
+    font-size: 1.5rem;
   }
 }
 </style>
