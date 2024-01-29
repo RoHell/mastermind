@@ -6,7 +6,7 @@ import NumberWrapper from './NumberWrapper.vue'
 
 const emit = defineEmits(['submit'])
 
-const inputFieldRef = ref<{[key: string]: HTMLElement}>({})
+const inputFieldRef = ref<{[key: string]: HTMLElement | null}>({})
 
 const { MIN, MAX, NUMBERS_COUNT, pickedNumbers, resetPickedNumbers } = useNumbers()
 
