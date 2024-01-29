@@ -72,24 +72,26 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
   </header>
 
   <main>
-    <div v-if="targetNumbers.length" class="mastermind__fields">
-      <TransitionGroup name="list" tag="div" class="mastermind__rounds">
-        <NumberHits
-          v-for="(field, index) in hits"
-          :key="hits.length - index"
-          :field="field"
-          :round="hits.length - index"
-        />
-      </TransitionGroup>
-      <NumberWrapper v-if="isWin" :numbers="targetNumbers">
-        <template #number="{ number }">
-          <span class="mastermind-target">{{ number }}</span>
-        </template>
-      </NumberWrapper>
-      <NumberPicker v-else class="mastermind__number-picker" @submit="calculatePoints" />
-      <WinAnimation v-if="isWin" />
-    </div>
-    <button v-else class="mastermind__play" @click="startGame">Play</button>
+    <Transition name="fade" appear mode="out-in">
+      <div v-if="targetNumbers.length" class="mastermind__fields">
+        <TransitionGroup name="list" tag="div" class="mastermind__rounds">
+          <NumberHits
+            v-for="(field, index) in hits"
+            :key="hits.length - index"
+            :field="field"
+            :round="hits.length - index"
+          />
+        </TransitionGroup>
+        <NumberWrapper v-if="isWin" :numbers="targetNumbers">
+          <template #number="{ number }">
+            <span class="mastermind-target">{{ number }}</span>
+          </template>
+        </NumberWrapper>
+        <NumberPicker v-else class="mastermind__number-picker" @submit="calculatePoints" />
+        <WinAnimation v-if="isWin" />
+      </div>
+      <button v-else class="mastermind__play" @click="startGame">Play</button>
+    </Transition>
   </main>
 </template>
 
@@ -187,5 +189,15 @@ main {
    animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
