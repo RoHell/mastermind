@@ -5,11 +5,11 @@
       alt="confetti cup"
       class="win-animation__cup"
     />
-    <img
+    <!-- <img
       src="../assets/confetti.gif"
       alt="confetti"
       class="win-animation__confetti"
-    />
+    /> -->
   </div>
 </template>
 
