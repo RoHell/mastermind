@@ -60,7 +60,7 @@ const onDownArrowClick = (index: number) => {
           :min="MIN"
           :tabindex="index"
           class="number-picker__input"
-          @input="validate($event, index)"
+          @keyup="validate($event, index)"
         />
         <button
           type="button"
