@@ -17,12 +17,11 @@
 .win-animation {
   position: absolute;
   display: flex;
-  bottom: 0;
-  width: 8rem;
-  bottom: -1rem;
+  bottom: -1.7rem;
 
   &__cup {
-    width: 8rem;
+    width: 10rem;
+    margin-left: 0.3rem;
   }
 
   // &__confetti {

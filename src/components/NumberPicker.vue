@@ -12,7 +12,6 @@ const isDisabled = computed(() => pickedNumbers.value.some(number => number === 
 
 const onSubmit = () => {
   emit('submit', pickedNumbers.value)
-  console.log('pickedNumbers.value', pickedNumbers.value)
   resetPickedNumbers()
 }
 
