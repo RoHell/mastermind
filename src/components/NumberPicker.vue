@@ -57,7 +57,7 @@ onMounted(() => {
           />
         </button>
         <input
-          :ref="(el: HTMLElement | null) => (inputFieldRef[index] = el)"
+          :ref="(el) => (inputFieldRef[index] = el as HTMLElement)"
           v-model="pickedNumbers[index]"
           type="number"
           :max="MAX"
