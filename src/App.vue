@@ -179,7 +179,7 @@ main {
 
 .list-enter-from,
 .list-leave-to {
-  // opacity: 0;
+  opacity: 0;
   transform: translateY(4rem);
 }
 
