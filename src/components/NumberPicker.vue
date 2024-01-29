@@ -15,6 +15,7 @@ const isDisabled = computed(() => pickedNumbers.value.some(number => number === 
 const onSubmit = () => {
   emit('submit', pickedNumbers.value)
   resetPickedNumbers()
+  inputFieldRef.value[0].focus()
 }
 
 const validate = (event: Event, index: number) => {
@@ -42,41 +43,44 @@ onMounted(() => {
 </script>
 
 <template>
-  <NumberWrapper class="number-picker" :numbers="pickedNumbers">
-    <template #number="{ index }">
-      <button
-        class="number-picker__chevron number-picker__chevron--up"
-        @click="onUpArrowClick(index)"
-      >
-        <img
-          src="../assets/icons/chevron-up.svg"
-          class="number-picker__chevron"
+  <form @submit.prevent="onSubmit">
+    <NumberWrapper class="number-picker" :numbers="pickedNumbers">
+      <template #number="{ index }">
+        <button
+          type="button"
+          class="number-picker__chevron number-picker__chevron--up"
+          @click="onUpArrowClick(index)"
+        >
+          <img
+            src="../assets/icons/chevron-up.svg"
+            class="number-picker__chevron"
+          />
+        </button>
+        <input
+          :ref="(el) => (inputFieldRef[index] = el)"
+          v-model="pickedNumbers[index]"
+          type="number"
+          :max="MAX"
+          :min="MIN"
+          :tabindex="index"
+          class="number-picker__input"
+          @input="validate($event, index)"
         />
-      </button>
-      <input
-        :ref="(el) => (inputFieldRef[index] = el)"
-        v-model="pickedNumbers[index]"
-        type="number"
-        :max="MAX"
-        :min="MIN"
-        :tabindex="index"
-        class="number-picker__input"
-        @input="validate($event, index)"
-      />
-      <button
-        class="number-picker__chevron number-picker__chevron--down"
-        @click="onDownArrowClick(index)"
-      >
-        <img
-          src="../assets/icons/chevron-down.svg"
-          class="number-picker__chevron"
-        />
-      </button>
-    </template>
+        <button
+          type="button"
+          class="number-picker__chevron number-picker__chevron--down"
+          @click="onDownArrowClick(index)"
+        >
+          <img
+            src="../assets/icons/chevron-down.svg"
+            class="number-picker__chevron"
+          />
+        </button>
+      </template>
 
     <template #right>
       <button
-        @click="onSubmit"
+        type="submit"
         :disabled="isDisabled"
         class="number-picker__submit"
       >
@@ -85,8 +89,10 @@ onMounted(() => {
           class="number-picker__submit-icon"
         >
       </button>
-    </template>
-  </NumberWrapper>
+      </template>
+    </NumberWrapper>
+  </form>
+  
 </template>
 
 <style lang="scss" scoped>

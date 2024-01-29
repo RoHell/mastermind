@@ -51,6 +51,7 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
       <template #left>
         <button
           v-if="(targetNumbers.length && hits.length) || isWin"
+          type="button"
           class="top-bar__action"
           @click="startGame"
         >
