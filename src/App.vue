@@ -57,16 +57,7 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
         </button>
       </template>
 
-      <div v-if="targetNumbers.length" class="mastermind__target">
-        <NumberWrapper
-        :numbers="showTargetNumber ? targetNumbers : Array(NUMBERS_COUNT)"
-        >
-          <template #number="{ number }">
-            <span v-if="showTargetNumber" class="mastermind-target">{{ number }}</span>
-            <span v-else class="mastermind-target mastermind-target--blank">?</span>
-          </template>
-        </NumberWrapper>
-      </div>
+      <span class="mastermind__logo"><b>Master</b><i>mind</i></span>
 
       <template #right>
         <button
@@ -90,7 +81,12 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
         />
       </TransitionGroup>
       
-      <NumberPicker class="mastermind__number-picker" @submit="calculatePoints" />
+      <NumberWrapper v-if="showTargetNumber" :numbers="targetNumbers">
+        <template #number="{ number }">
+          <span v-if="showTargetNumber" class="mastermind-target">{{ number }}</span>
+        </template>
+      </NumberWrapper>
+      <NumberPicker v-else class="mastermind__number-picker" @submit="calculatePoints" />
     </div>
     <button v-else class="mastermind__play" @click="startGame">Play</button>
   </main>
@@ -156,25 +152,20 @@ main {
     margin: auto;
   }
 
-  &__target {
-    font-weight: 700;
+  &__logo {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
     margin-left: auto;
-    gap: 0.5rem;
     font-size: 1.5rem;
   }
 
   &-target {
-    background-color: rgba(white, 0.5);
+    font-weight: 700;
+    background-color: white;
     width: 100%;
-
-    &--blank {
-      opacity: 0.5;
-    }
   }
 }
 
