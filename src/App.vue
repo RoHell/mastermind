@@ -131,7 +131,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 2.3rem;
     height: calc(100% - 2*var(--top-bar-height));
     margin: var(--top-bar-height) 0;
   }
