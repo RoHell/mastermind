@@ -15,14 +15,14 @@ const isDisabled = computed(() => pickedNumbers.value.some(number => number === 
 const onSubmit = () => {
   emit('submit', pickedNumbers.value)
   resetPickedNumbers()
-  inputFieldRef.value[0].focus()
+  inputFieldRef.value?.[0]?.focus()
 }
 
 const validate = (event: Event, index: number) => {
   const target = event.target as HTMLInputElement
   if (Number(target.value) > MAX) pickedNumbers.value[index] = Number(String(pickedNumbers.value[index]).slice(-1))
   if (Number(target.value) < MIN) pickedNumbers.value[index] = MIN
-  if (index < NUMBERS_COUNT - 1) inputFieldRef.value[index + 1].focus()
+  if (index < NUMBERS_COUNT - 1) inputFieldRef.value?.[index + 1]?.focus()
 }
 
 const onUpArrowClick = (index: number) => {
@@ -37,7 +37,7 @@ const onDownArrowClick = (index: number) => {
 }
 
 onMounted(() => {
-  inputFieldRef.value[0].focus()
+  inputFieldRef.value?.[0]?.focus()
 })
 
 </script>
