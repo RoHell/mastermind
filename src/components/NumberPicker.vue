@@ -8,6 +8,8 @@ const emit = defineEmits(['submit'])
 
 const inputFieldRef = ref<{[key: string]: HTMLElement | null}>({})
 
+const isDeleting = ref(false)
+
 const { MIN, MAX, NUMBERS_COUNT, pickedNumbers, resetPickedNumbers } = useNumbers()
 
 const isDisabled = computed(() => pickedNumbers.value.some(number => number === null))
@@ -19,10 +21,18 @@ const onSubmit = () => {
 }
 
 const validate = (event: Event, index: number) => {
-  const target = event.target as HTMLInputElement
-  if (Number(target.value) > MAX) pickedNumbers.value[index] = Number(String(pickedNumbers.value[index]).slice(-1))
-  if (Number(target.value) < MIN) pickedNumbers.value[index] = MIN
-  if (index < NUMBERS_COUNT - 1) inputFieldRef.value?.[index + 1]?.focus()
+  setTimeout(() => {
+    const target = event.target as HTMLInputElement
+    if (Number(target.value) > MAX) pickedNumbers.value[index] = Number(String(pickedNumbers.value[index]).slice(-1))
+    if (Number(target.value) < MIN) pickedNumbers.value[index] = MIN
+    if (index < NUMBERS_COUNT - 1 && !isDeleting.value) inputFieldRef.value?.[index + 1]?.focus()
+    if (index === 0) isDeleting.value = false
+  }, 0)
+}
+
+const onDeleteKeyPress = (index: number) => {
+  inputFieldRef.value?.[index - 1]?.focus()
+  isDeleting.value = true
 }
 
 const onUpArrowClick = (index: number) => {
@@ -60,7 +70,8 @@ const onDownArrowClick = (index: number) => {
           :min="MIN"
           :tabindex="index"
           class="number-picker__input"
-          @keyup="validate($event, index)"
+          @keydown="validate($event, index)"
+          @keyup.delete="onDeleteKeyPress(index)"
         />
         <button
           type="button"
