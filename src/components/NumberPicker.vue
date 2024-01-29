@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { Ref, computed, onMounted, ref } from 'vue';
 import { useNumbers } from '../composables'
 
 import NumberWrapper from './NumberWrapper.vue'
 
 const emit = defineEmits(['submit'])
 
-const { MIN, MAX, pickedNumbers, resetPickedNumbers } = useNumbers()
+const inputFieldRef = ref<{[key: string]: HTMLElement}>({})
+
+const { MIN, MAX, NUMBERS_COUNT, pickedNumbers, resetPickedNumbers } = useNumbers()
 
 const isDisabled = computed(() => pickedNumbers.value.some(number => number === null))
 
@@ -19,6 +21,7 @@ const validate = (event: Event, index: number) => {
   const target = event.target as HTMLInputElement
   if (Number(target.value) > MAX) pickedNumbers.value[index] = Number(String(pickedNumbers.value[index]).slice(-1))
   if (Number(target.value) < MIN) pickedNumbers.value[index] = MIN
+  if (index < NUMBERS_COUNT - 1) inputFieldRef.value[index + 1].focus()
 }
 
 const onUpArrowClick = (index: number) => {
@@ -31,6 +34,10 @@ const onDownArrowClick = (index: number) => {
   }
   pickedNumbers.value[index] <= MIN ? pickedNumbers.value[index] = MAX : pickedNumbers.value[index]--
 }
+
+onMounted(() => {
+  inputFieldRef.value[0].focus()
+})
 
 </script>
 
@@ -47,6 +54,7 @@ const onDownArrowClick = (index: number) => {
         />
       </button>
       <input
+        :ref="(el) => (inputFieldRef[index] = el)"
         v-model="pickedNumbers[index]"
         type="number"
         :max="MAX"
