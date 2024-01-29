@@ -15,27 +15,21 @@
 
 <style lang="scss" scoped>
 .win-animation {
-  position: fixed;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
   display: flex;
-  top: 0;
-  left: 0;
   bottom: 0;
-  right: 0;
-  
+  width: 8rem;
+  bottom: -1rem;
 
   &__cup {
-    position: absolute;
     width: 8rem;
-    bottom: 2rem;
   }
 
-  &__confetti {
-    position: absolute;
-    top: var(--top-bar-height);
-    height: 100%;
-    object-fit: cover;
-  }
+  // &__confetti {
+  //   position: absolute;
+  //   top: var(--top-bar-height);
+  //   height: 100%;
+  //   object-fit: cover;
+  // }
 }
 </style>
