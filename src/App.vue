@@ -87,7 +87,7 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
         </template>
       </NumberWrapper>
       <NumberPicker v-else class="mastermind__number-picker" @submit="calculatePoints" />
-      <WinAnimation v-if="!isWin" />
+      <WinAnimation v-if="isWin" />
     </div>
     <button v-else class="mastermind__play" @click="startGame">Play</button>
   </main>
