@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Ref, computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useNumbers } from '../composables'
 
 import NumberWrapper from './NumberWrapper.vue'
