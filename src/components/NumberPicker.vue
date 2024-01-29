@@ -36,10 +36,6 @@ const onDownArrowClick = (index: number) => {
   pickedNumbers.value[index] <= MIN ? pickedNumbers.value[index] = MAX : pickedNumbers.value[index]--
 }
 
-onMounted(() => {
-  inputFieldRef.value?.[0]?.focus()
-})
-
 </script>
 
 <template>
