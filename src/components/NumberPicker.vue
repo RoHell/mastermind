@@ -81,6 +81,7 @@ const validate = (event: Event, index: number) => {
 .number-picker {
   &__submit {
     background-color: var(--background-color);
+    transition: 0.2s ease-in;
     &:disabled {
       pointer-events: none;
       opacity: 0.3;

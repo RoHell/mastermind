@@ -4,6 +4,7 @@ import TopBar from './components/TopBar.vue'
 import NumberHits from './components/NumberHits.vue'
 import NumberPicker from './components/NumberPicker.vue'
 import NumberWrapper from './components/NumberWrapper.vue'
+import WinAnimation from './components/WinAnimation.vue'
 
 import { useNumbers } from './composables'
 import { HitInterface } from './types'
@@ -12,7 +13,7 @@ const { NUMBERS_COUNT, NUMBERS_RANGE, hits } = useNumbers()
 
 const targetNumbers = ref<number[]>([])
 
-const showTargetNumber = computed(() => hits.value[0]?.points && (hits.value[0].points >= NUMBERS_COUNT))
+const isWin = computed(() => hits.value[0]?.points && (hits.value[0].points >= NUMBERS_COUNT))
 
 const generateTargetNumber = () => {
   targetNumbers.value = Array.from({ length: NUMBERS_COUNT }, () => Math.floor(Math.random() * NUMBERS_RANGE))
@@ -49,7 +50,7 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
     <TopBar class="mastermind__top-bar">
       <template #left>
         <button
-          v-if="targetNumbers.length && hits.length"
+          v-if="(targetNumbers.length && hits.length) || isWin"
           class="top-bar__action"
           @click="startGame"
         >
@@ -80,13 +81,13 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
           :round="hits.length - index"
         />
       </TransitionGroup>
-      
-      <NumberWrapper v-if="showTargetNumber" :numbers="targetNumbers">
+      <NumberWrapper v-if="isWin" :numbers="targetNumbers">
         <template #number="{ number }">
-          <span v-if="showTargetNumber" class="mastermind-target">{{ number }}</span>
+          <span class="mastermind-target">{{ number }}</span>
         </template>
       </NumberWrapper>
       <NumberPicker v-else class="mastermind__number-picker" @submit="calculatePoints" />
+      <WinAnimation v-if="isWin" />
     </div>
     <button v-else class="mastermind__play" @click="startGame">Play</button>
   </main>
