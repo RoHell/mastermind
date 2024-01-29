@@ -31,7 +31,6 @@ defineProps<Props>()
 .number-wrapper {
   position: relative;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
 
@@ -41,11 +40,12 @@ defineProps<Props>()
     gap: 0.5rem;
 
     :slotted(input) {
-      font-size: 1.5rem;
+      width: 100%;
+      min-height: 100%;
       text-align: center;
-      width: 2.3rem;
-      height: 2.3rem;
-      border: 1px solid;
+      background-color: transparent;
+      border: none;
+      font-size: 1.5rem;
     }
   }
 
@@ -53,6 +53,11 @@ defineProps<Props>()
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    width: 2.3rem;
+    height: 2.3rem;
+    border: 1px solid;
   }
 
   &__left {

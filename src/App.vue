@@ -59,12 +59,11 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
 
       <div v-if="targetNumbers.length" class="mastermind__target">
         <NumberWrapper
-          class="mastermind__target-numbers"
-          :numbers="showTargetNumber ? targetNumbers : Array(NUMBERS_COUNT)"
+        :numbers="showTargetNumber ? targetNumbers : Array(NUMBERS_COUNT)"
         >
           <template #number="{ number }">
-            <span v-if="showTargetNumber">{{ number }}</span>
-            <span v-else>?</span>
+            <span v-if="showTargetNumber" class="mastermind-target">{{ number }}</span>
+            <span v-else class="mastermind-target mastermind-target--blank">?</span>
           </template>
         </NumberWrapper>
       </div>
@@ -91,7 +90,7 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
         />
       </TransitionGroup>
       
-      <NumberPicker @submit="calculatePoints" />
+      <NumberPicker class="mastermind__number-picker" @submit="calculatePoints" />
     </div>
     <button v-else class="mastermind__play" @click="startGame">Play</button>
   </main>
@@ -101,15 +100,12 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
 
 
 main {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  top: var(--top-bar-height);
-  height: calc(100vh - var(--top-bar-height));
+  height: 100vh;
   width: 100%;
-  padding: 0 0 1rem;
   box-sizing: border-box;
 }
 
@@ -135,7 +131,9 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
+    gap: 2rem;
+    height: calc(100% - 2*var(--top-bar-height));
+    margin: var(--top-bar-height) 0;
   }
 
   &__rounds {
@@ -169,6 +167,15 @@ main {
     gap: 0.5rem;
     font-size: 1.5rem;
   }
+
+  &-target {
+    background-color: rgba(white, 0.5);
+    width: 100%;
+
+    &--blank {
+      opacity: 0.5;
+    }
+  }
 }
 
 .list-move, /* apply transition to moving elements */
@@ -187,15 +194,5 @@ main {
    animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
-}
-
-.mastermind__target-numbers:deep(.number-wrapper__digit) {
-  border: 1px solid;
-  background-color: rgba(white, 0.5);
-  width: 2.4rem;
-  height: 2.3rem;
-  display: flex;
-  place-content: center;
-  align-items: center;
 }
 </style>

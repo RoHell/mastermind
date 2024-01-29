@@ -28,14 +28,12 @@ const validate = (event: Event, index: number) => {
     <template #number="{ index }">
       <button
         :disabled="pickedNumbers[index] >= MAX"
+        class="number-picker__chevron number-picker__chevron--up"
         @click="pickedNumbers[index]++"
       >
         <img
           src="../assets/icons/chevron-up.svg"
           class="number-picker__chevron"
-          :class="{
-            'number-picker__chevron--disabled': pickedNumbers[index] >= MAX
-          }"
         />
       </button>
       <input
@@ -49,14 +47,12 @@ const validate = (event: Event, index: number) => {
       />
       <button
         :disabled="pickedNumbers[index] <= MIN && pickedNumbers[index] !== null"
+        class="number-picker__chevron number-picker__chevron--down"
         @click="pickedNumbers[index] === null ? pickedNumbers[index] = MIN : pickedNumbers[index]--"
       >
         <img
           src="../assets/icons/chevron-down.svg"
           class="number-picker__chevron"
-          :class="{
-            'number-picker__chevron--disabled': pickedNumbers[index] <= MIN && pickedNumbers[index] !== null
-          }"
         />
       </button>
     </template>
@@ -70,9 +66,6 @@ const validate = (event: Event, index: number) => {
         <img
           src="../assets/icons/play.svg"
           class="number-picker__submit-icon"
-          :class="{
-            'number-picker__submit-icon--disabled': isDisabled
-          }"
         >
       </button>
     </template>
@@ -80,34 +73,40 @@ const validate = (event: Event, index: number) => {
 </template>
 
 <style lang="scss" scoped>
-  .number-wrapper:deep(.number-wrapper__digits) {
-    background-image: linear-gradient(transparent, var(--background-color) 20%, var(--background-color) 80%, transparent);
+.number-wrapper {
+  &:deep(.number-wrapper__digit) {
+    background-color: rgba(white, 0.5);
   }
+}
 .number-picker {
   &__submit {
     background-color: var(--background-color);
+    &:disabled {
+      pointer-events: none;
+      opacity: 0.3;
+    }
   }
 
   &__submit-icon {
-    width: 2.3rem;
-    height: 2.3rem;
+    width: 100%;
+    height: 100%;
     background-color: var(--background-color);
   }
 
   &__chevron {
-    width: 2rem;
-    height: 2rem;
-  }
-
-  &__chevron, &__submit-icon {
-    &--disabled {
+    width: calc(100% + 2px);
+    height: 100%;
+    padding: 1px transparent;
+    &:disabled {
       pointer-events: none;
-      opacity: 0.5;
+      opacity: 0.3;
     }
-  }
-
-  &__input {
-    background-color: rgba(white, 0.5);
+    &--up {
+      background-image: linear-gradient(transparent, var(--background-color));
+    }
+    &--down {
+      background-image: linear-gradient(var(--background-color transparent));
+    }
   }
 }
 </style>
