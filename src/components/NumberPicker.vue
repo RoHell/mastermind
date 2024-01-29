@@ -17,7 +17,6 @@ const onSubmit = () => {
 
 const validate = (event: Event, index: number) => {
   const target = event.target as HTMLInputElement
-  if (Number(target.value) === 0) pickedNumbers.value[index] = 0
   if (Number(target.value) > MAX) pickedNumbers.value[index] = Number(String(pickedNumbers.value[index]).slice(-1))
   if (Number(target.value) < MIN) pickedNumbers.value[index] = MIN
 }
