@@ -12,13 +12,26 @@ const isDisabled = computed(() => pickedNumbers.value.some(number => number === 
 
 const onSubmit = () => {
   emit('submit', pickedNumbers.value)
+  console.log('pickedNumbers.value', pickedNumbers.value)
   resetPickedNumbers()
 }
 
 const validate = (event: Event, index: number) => {
   const target = event.target as HTMLInputElement
+  if (Number(target.value) === 0) pickedNumbers.value[index] = 0
   if (Number(target.value) > MAX) pickedNumbers.value[index] = Number(String(pickedNumbers.value[index]).slice(-1))
   if (Number(target.value) < MIN) pickedNumbers.value[index] = MIN
+}
+
+const onUpArrowClick = (index: number) => {
+  (pickedNumbers.value[index] >= MAX) ? pickedNumbers.value[index] = MIN : pickedNumbers.value[index]++
+}
+
+const onDownArrowClick = (index: number) => {
+  if (pickedNumbers.value[index] === null) {
+    return pickedNumbers.value[index] = 0
+  }
+  pickedNumbers.value[index] <= MIN ? pickedNumbers.value[index] = MAX : pickedNumbers.value[index]--
 }
 
 </script>
@@ -27,9 +40,8 @@ const validate = (event: Event, index: number) => {
   <NumberWrapper class="number-picker" :numbers="pickedNumbers">
     <template #number="{ index }">
       <button
-        :disabled="pickedNumbers[index] >= MAX"
         class="number-picker__chevron number-picker__chevron--up"
-        @click="pickedNumbers[index]++"
+        @click="onUpArrowClick(index)"
       >
         <img
           src="../assets/icons/chevron-up.svg"
@@ -46,9 +58,8 @@ const validate = (event: Event, index: number) => {
         @input="validate($event, index)"
       />
       <button
-        :disabled="pickedNumbers[index] <= MIN && pickedNumbers[index] !== null"
         class="number-picker__chevron number-picker__chevron--down"
-        @click="pickedNumbers[index] === null ? pickedNumbers[index] = MIN : pickedNumbers[index]--"
+        @click="onDownArrowClick(index)"
       >
         <img
           src="../assets/icons/chevron-down.svg"
