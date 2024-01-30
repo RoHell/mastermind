@@ -122,7 +122,7 @@ const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
       </TransitionGroup>
     </TransitionGroup>
     <div v-else class="mastermind__intro">
-      v 0.2
+      v 0.3
       <button
         type="button"
         class="mastermind__play"

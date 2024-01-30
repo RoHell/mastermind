@@ -25,6 +25,7 @@ const onSubmit = () => {
   emit('submit', pickedNumbers.value)
   resetPickedNumbers()
   // inputFieldRef.value?.[0]?.focus()
+  inputFieldRef.value?.[NUMBERS_COUNT - 1]?.blur()
 }
 
 const validate = (event: Event, index: number) => {
