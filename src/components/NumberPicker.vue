@@ -21,10 +21,10 @@ const isDisabled = computed(() => pickedNumbers.value.some(number => number === 
 
 const resetPickedNumbers = () => pickedNumbers.value = Array(NUMBERS_COUNT).fill(null)
 
-const onSubmit = () => {
+const onSubmit = async () => {
   emit('submit', pickedNumbers.value)
+  await resetPickedNumbers()
   inputFieldRef.value?.[0]?.focus()
-  resetPickedNumbers()
 }
 
 const validate = (event: Event, index: number) => {
