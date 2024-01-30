@@ -94,7 +94,6 @@ const onDownArrowClick = (index: number) => {
 
     <template #right>
       <button
-        type="submit"
         :disabled="isDisabled"
         class="number-picker__submit"
       >
