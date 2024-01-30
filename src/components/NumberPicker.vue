@@ -17,7 +17,7 @@ const inputFieldRef = ref<{[key: string]: HTMLElement | null}>({})
 const isDeleting = ref(false)
 const pickedNumbers = ref<PickedNumbersType>(Array(NUMBERS_COUNT).fill(null))
 
-const isDisabled = computed(() => pickedNumbers.value.some(number => number === null))
+const isDisabled = computed(() => pickedNumbers.value.some(number => !number === null || number === ''))
 
 const resetPickedNumbers = () => pickedNumbers.value = Array(NUMBERS_COUNT).fill(null)
 
@@ -32,7 +32,7 @@ const validate = (event: Event, index: number) => {
     const target = event.target as HTMLInputElement
     if (Number(target.value) > MAX) pickedNumbers.value[index] = Number(String(pickedNumbers.value[index]).slice(-1))
     if (Number(target.value) < MIN) pickedNumbers.value[index] = MIN
-    if (index < NUMBERS_COUNT - 1 && !isDeleting.value) inputFieldRef.value?.[index + 1]?.focus()
+    if (index < (NUMBERS_COUNT - 1) && !isDeleting.value) inputFieldRef.value?.[index + 1]?.focus()
     if (index === 0) isDeleting.value = false
   }, 0)
 }
