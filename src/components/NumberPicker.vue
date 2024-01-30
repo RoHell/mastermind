@@ -3,25 +3,26 @@ import { computed, ref } from 'vue';
 import { useNumbers } from '../composables'
 
 import NumberWrapper from './NumberWrapper.vue'
+import { PickedNumbersType } from '../types';
 
 const emit = defineEmits(['submit'])
-
-const inputFieldRef = ref<{[key: string]: HTMLElement | null}>({})
-
-const isDeleting = ref(false)
 
 const {
   MIN,
   MAX,
   NUMBERS_COUNT,
-  pickedNumbers,
-  resetPickedNumbers,
 } = useNumbers()
+
+const inputFieldRef = ref<{[key: string]: HTMLElement | null}>({})
+const isDeleting = ref(false)
+const pickedNumbers = ref<PickedNumbersType>(Array(NUMBERS_COUNT).fill(null))
 
 const isDisabled = computed(() => pickedNumbers.value.some(number => number === null))
 
+const resetPickedNumbers = () => pickedNumbers.value = Array(NUMBERS_COUNT).fill(null)
+
 const onSubmit = () => {
-  emit('submit')
+  emit('submit', pickedNumbers.value)
   resetPickedNumbers()
   inputFieldRef.value?.[0]?.focus()
 }

@@ -13,7 +13,6 @@ const {
   NUMBERS_COUNT,
   hitsList,
   targetNumbers,
-  pickedNumbers,
   generateTargetNumber,
  } = useNumbers()
 
@@ -24,12 +23,12 @@ const startGame = () => {
   generateTargetNumber()
 }
 
-const calculatePoints = () => {
+const calculatePoints = async (pickedNumbers: number[]) => {
   let hitResults: number[] = Array(NUMBERS_COUNT).fill(0)
 
   targetNumbers.value?.forEach((targetNumber: number, index: number) => {
-    const hitIndex = pickedNumbers.value.findIndex(shotNumber => shotNumber === targetNumber)
-    const isExactHit = targetNumber === pickedNumbers.value[index]
+    const hitIndex = pickedNumbers.findIndex(shotNumber => shotNumber === targetNumber)
+    const isExactHit = targetNumber === pickedNumbers[index]
     const isHalfHit = hitIndex > -1
     const isHitResultIndexEmpty = hitResults[hitIndex] === 0
 
@@ -38,7 +37,7 @@ const calculatePoints = () => {
   })
 
   const points = hitResults.reduce((a, b) => a + b, 0)
-  addHit({ numbers: pickedNumbers.value, points})
+  await addHit({ numbers: pickedNumbers, points})
 }
 
 const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
