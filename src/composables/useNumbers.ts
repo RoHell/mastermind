@@ -7,18 +7,23 @@ const MIN = 0
 const MAX = NUMBERS_RANGE - 1
 
 export const useNumbers = () => {
-  const hits = ref<HitInterface[]>([])
-  
+  const hitsList = ref<HitInterface[]>([])
+  const targetNumbers = ref<number[]>([])
   const pickedNumbers = ref<PickedNumbersType>(Array(NUMBERS_COUNT).fill(null))
+  
   const resetPickedNumbers = () => pickedNumbers.value = Array(NUMBERS_COUNT).fill(null)
-
+  const generateTargetNumber = () => {
+    targetNumbers.value = Array.from({ length: NUMBERS_COUNT }, () => Math.floor(Math.random() * NUMBERS_RANGE))
+  };
   return {
     NUMBERS_COUNT,
     NUMBERS_RANGE,
     MIN,
     MAX,
+    hitsList,
+    targetNumbers,
     pickedNumbers,
     resetPickedNumbers,
-    hits
+    generateTargetNumber,
   }
 }

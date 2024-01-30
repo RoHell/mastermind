@@ -3,7 +3,7 @@ import NumberWrapper from './NumberWrapper.vue'
 import { HitInterface } from '../types';
 
 interface Props {
-  field: HitInterface
+  hit: HitInterface
   round: number
 }
 
@@ -11,7 +11,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <NumberWrapper :numbers="field.numbers">
+  <NumberWrapper :numbers="hit.numbers">
     <template #left>
       <span>{{ round }}.</span>
     </template>
@@ -25,7 +25,7 @@ defineProps<Props>()
     </template>
 
     <template #right>
-      {{ field.points?.toFixed(1) }}
+      {{ hit.points?.toFixed(1) }}
     </template>
   </NumberWrapper>
 </template>

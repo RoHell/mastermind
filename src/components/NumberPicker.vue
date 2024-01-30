@@ -10,12 +10,18 @@ const inputFieldRef = ref<{[key: string]: HTMLElement | null}>({})
 
 const isDeleting = ref(false)
 
-const { MIN, MAX, NUMBERS_COUNT, pickedNumbers, resetPickedNumbers } = useNumbers()
+const {
+  MIN,
+  MAX,
+  NUMBERS_COUNT,
+  pickedNumbers,
+  resetPickedNumbers,
+} = useNumbers()
 
 const isDisabled = computed(() => pickedNumbers.value.some(number => number === null))
 
 const onSubmit = () => {
-  emit('submit', pickedNumbers.value)
+  emit('submit')
   resetPickedNumbers()
   inputFieldRef.value?.[0]?.focus()
 }
@@ -133,10 +139,10 @@ const onDownArrowClick = (index: number) => {
       opacity: 0.3;
     }
     &--up {
-      background-image: linear-gradient(transparent, var(--background-color));
+      background-image: linear-gradient(transparent, var(--background-color) 40%);
     }
     &--down {
-      background-image: linear-gradient(var(--background-color transparent));
+      background-image: linear-gradient(var(--background-color), transparent 40%);
     }
   }
 }

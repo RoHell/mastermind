@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import TopBar from './components/TopBar.vue'
 import NumberHits from './components/NumberHits.vue'
 import NumberPicker from './components/NumberPicker.vue'
@@ -9,35 +9,39 @@ import WinAnimation from './components/WinAnimation.vue'
 import { useNumbers } from './composables'
 import { HitInterface } from './types'
 
-const { NUMBERS_COUNT, NUMBERS_RANGE, hits } = useNumbers()
+const {
+  NUMBERS_COUNT,
+  hitsList,
+  targetNumbers,
+  pickedNumbers,
+  generateTargetNumber,
+ } = useNumbers()
 
-const targetNumbers = ref<number[]>([])
+const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].points >= NUMBERS_COUNT))
 
-const isWin = computed(() => hits.value[0]?.points && (hits.value[0].points >= NUMBERS_COUNT))
-
-const generateTargetNumber = () => {
-  targetNumbers.value = Array.from({ length: NUMBERS_COUNT }, () => Math.floor(Math.random() * NUMBERS_RANGE))
-};
 const startGame = () => {
-  hits.value = []
+  hitsList.value = []
   generateTargetNumber()
 }
 
-const calculatePoints = async (numbers: number[]) => {
+const calculatePoints = () => {
   let hitResults: number[] = Array(NUMBERS_COUNT).fill(0)
 
   targetNumbers.value?.forEach((targetNumber: number, index: number) => {
-    if (numbers[index] === targetNumbers.value[index]) return hitResults[index] = 1
+    const hitIndex = pickedNumbers.value.findIndex(shotNumber => shotNumber === targetNumber)
+    const isExactHit = targetNumber === pickedNumbers.value[index]
+    const isHalfHit = hitIndex > -1
+    const isHitResultIndexEmpty = hitResults[hitIndex] === 0
 
-    const hitIndex = numbers.findIndex(shotNumber => shotNumber === targetNumber)
-    if (hitIndex > -1 && hitResults[hitIndex] === 0) hitResults[hitIndex] = 0.5
+    if (isExactHit) hitResults[index] = 1
+    else if (isHalfHit && isHitResultIndexEmpty) hitResults[hitIndex] = 0.5
   })
 
   const points = hitResults.reduce((a, b) => a + b, 0)
-  await addHit({ numbers, points})
+  addHit({ numbers: pickedNumbers.value, points})
 }
 
-const addHit = (hit: HitInterface) => hits.value.unshift(hit)
+const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
 </script>
 
 <template>
@@ -50,7 +54,7 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
     <TopBar class="mastermind__top-bar">
       <template #left>
         <button
-          v-if="(targetNumbers.length && hits.length) || isWin"
+          v-if="(targetNumbers.length && hitsList.length) || isWin"
           type="button"
           class="top-bar__action"
           @click="startGame"
@@ -77,10 +81,10 @@ const addHit = (hit: HitInterface) => hits.value.unshift(hit)
       <div v-if="targetNumbers.length" class="mastermind__fields">
         <TransitionGroup name="list" tag="div" class="mastermind__rounds">
           <NumberHits
-            v-for="(field, index) in hits"
-            :key="hits.length - index"
-            :field="field"
-            :round="hits.length - index"
+            v-for="(hit, index) in hitsList"
+            :key="hitsList.length - index"
+            :hit="hit"
+            :round="hitsList.length - index"
           />
         </TransitionGroup>
         <NumberWrapper v-if="isWin" :numbers="targetNumbers">
