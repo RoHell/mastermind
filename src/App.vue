@@ -77,8 +77,19 @@ const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
 
   <main>
     <Transition name="fade" appear mode="out-in">
-      <div v-if="targetNumbers.length" class="mastermind__fields">
-        <TransitionGroup name="list" tag="div" class="mastermind__rounds">
+      <div class="mastermind__fields">
+        <button
+          v-if="!targetNumbers.length"
+          class="mastermind__play"
+          @click="startGame"
+        >Play</button>
+
+        <TransitionGroup
+          v-else
+          name="list"
+          tag="div"
+          class="mastermind__rounds"
+        >
           <NumberHits
             v-for="(hit, index) in hitsList"
             :key="hitsList.length - index"
@@ -86,24 +97,34 @@ const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
             :round="hitsList.length - index"
           />
         </TransitionGroup>
-        <NumberWrapper v-if="isWin" :numbers="targetNumbers">
-          <template #number="{ number }">
-            <span class="mastermind-target">{{ number }}</span>
-          </template>
-        </NumberWrapper>
-        <NumberPicker v-else class="mastermind__number-picker" @submit="calculatePoints" />
-        <Transition name="fade">
-          <WinAnimation v-if="isWin" />
-        </Transition>
+
+        <TransitionGroup name="fade">
+          <NumberWrapper
+            v-if="isWin"
+            :numbers="targetNumbers"
+            key="target-numbers"
+          >
+            <template #number="{ number }">
+              <span class="mastermind-target">{{ number }}</span>
+            </template>
+          </NumberWrapper>
+          <NumberPicker
+            v-else-if="targetNumbers.length"
+            key="number-picker"
+            class="mastermind__number-picker"
+            @submit="calculatePoints"
+          />
+          <WinAnimation
+            v-if="isWin"
+            key="win-animation"
+          />
+        </TransitionGroup>
       </div>
-      <button v-else class="mastermind__play" @click="startGame">Play</button>
     </Transition>
   </main>
 </template>
 
 <style lang="scss" scoped>
-
-
 main {
   display: flex;
   flex-direction: column;
@@ -123,13 +144,9 @@ main {
     width: 100%;
     padding: 0 1rem;
     box-sizing: border-box;
-    opacity: 0;
     height: var(--top-bar-height);
     transition: 0.2s ease-in;
     box-shadow: 0 1px 4px 1px rgba(#012162, 0.2);
-    &--active {
-      opacity: 1;
-    }
   }
 
   &__fields {
