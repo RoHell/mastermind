@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import TopBar from './components/TopBar.vue'
 import NumberHits from './components/NumberHits.vue'
 import NumberPicker from './components/NumberPicker.vue'
-import NumberWrapper from './components/NumberWrapper.vue'
 import WinAnimation from './components/WinAnimation.vue'
+import NumberTarget from './components/NumberTarget.vue'
 
 import { useNumbers } from './composables'
 import { HitInterface } from './types'
@@ -44,83 +45,88 @@ const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
 </script>
 
 <template>
-  <header
-    class="mastermind__header"
-    :class="{
-      'mastermind__header--active': targetNumbers.length
-    }"
-  >
-    <TopBar class="mastermind__top-bar">
+  <header class="mastermind__header">
+    <TopBar>
       <template #left>
         <button
           v-if="(targetNumbers.length && hitsList.length) || isWin"
           type="button"
-          class="top-bar__action"
           @click="startGame"
         >
-          <img src="./assets/icons/reload.svg" width="18" height="18" />
+          <img
+            src="./assets/icons/reload.svg"
+            width="18"
+            height="18"
+          />
         </button>
       </template>
 
-      <span class="mastermind__logo"><b>Master</b><i>mind</i></span>
+      <span class="mastermind__logo">
+        <b>Master</b>
+        <i>mind</i>
+      </span>
 
       <template #right>
         <button
-          class="top-bar__action"
+          type="button"
           @click=""
         >
-          <img src="./assets/icons/more.svg" width="24" height="24" />
+          <img
+            src="./assets/icons/more.svg"
+            width="24"
+            height="24"
+          />
         </button>
       </template>
     </TopBar>
   </header>
 
   <main>
-    <Transition name="fade" appear mode="out-in">
-      <div class="mastermind__fields">
-        <button
-          v-if="!targetNumbers.length"
-          class="mastermind__play"
-          @click="startGame"
-        >Play</button>
+    <TransitionGroup
+      v-if="targetNumbers.length"
+      name="list"
+      appear
+      mode="out-in"
+      tag="div"
+      class="mastermind__game"
+    >
 
-        <TransitionGroup
+      <TransitionGroup
+        key="number-hits"
+        name="list"
+        tag="div"
+        class="mastermind__rounds"
+      >
+        <NumberHits
+          v-for="(hit, index) in hitsList"
+          :key="hitsList.length - index"
+          :hit="hit"
+          :round="hitsList.length - index"
+        />
+      </TransitionGroup>
+
+      <TransitionGroup
+        name="list"
+        key="target-picker"
+        tag="div"
+      >
+        <div class="mastermind__win" v-if="isWin">
+          <NumberTarget :numbers="targetNumbers" key="number-target" />
+          <WinAnimation key="win-animation" />
+        </div>
+        <NumberPicker
           v-else
-          name="list"
-          tag="div"
-          class="mastermind__rounds"
-        >
-          <NumberHits
-            v-for="(hit, index) in hitsList"
-            :key="hitsList.length - index"
-            :hit="hit"
-            :round="hitsList.length - index"
-          />
-        </TransitionGroup>
+          key="number-picker"
+          @submit="calculatePoints"
+        />
+      </TransitionGroup>
+    </TransitionGroup>
 
-        <TransitionGroup name="fade">
-          <NumberWrapper
-            v-if="isWin"
-            :numbers="targetNumbers"
-            key="target-numbers"
-          >
-            <template #number="{ number }">
-              <span class="mastermind-target">{{ number }}</span>
-            </template>
-          </NumberWrapper>
-          <NumberPicker
-            v-else-if="targetNumbers.length"
-            key="number-picker"
-            class="mastermind__number-picker"
-            @submit="calculatePoints"
-          />
-          <WinAnimation
-            v-if="isWin"
-            key="win-animation"
-          />
-        </TransitionGroup>
-      </div>
-    </Transition>
+    <button
+      v-else
+      class="mastermind__play"
+      @click="startGame"
+    >Play</button>
   </main>
 </template>
 
@@ -149,7 +155,7 @@ main {
     box-shadow: 0 1px 4px 1px rgba(#012162, 0.2);
   }
 
-  &__fields {
+  &__game {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -189,10 +195,9 @@ main {
     font-size: 1.5rem;
   }
 
-  &-target {
-    font-weight: 700;
-    background-color: white;
-    width: 100%;
+  &__win {
+    display: flex;
+    justify-content: center;
   }
 }
 
