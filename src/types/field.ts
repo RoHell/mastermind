@@ -1,4 +1,4 @@
-export type PickedNumbersType = number[]
+export type PickedNumbersType = number[] | string[]
 
 export type PointsType = number
 

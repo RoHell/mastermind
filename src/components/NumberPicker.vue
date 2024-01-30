@@ -17,7 +17,7 @@ const inputFieldRef = ref<{[key: string]: HTMLElement | null}>({})
 const isDeleting = ref(false)
 const pickedNumbers = ref<PickedNumbersType>(Array(NUMBERS_COUNT).fill(null))
 
-const isDisabled = computed(() => pickedNumbers.value.some(number => !number === null || number === ''))
+const isDisabled = computed(() => pickedNumbers.value.some(number => number === null || number === ''))
 
 const resetPickedNumbers = () => pickedNumbers.value = Array(NUMBERS_COUNT).fill(null)
 
@@ -43,14 +43,14 @@ const onDeleteKeyPress = (index: number) => {
 }
 
 const onUpArrowClick = (index: number) => {
-  (pickedNumbers.value[index] >= MAX) ? pickedNumbers.value[index] = MIN : pickedNumbers.value[index]++
+  (pickedNumbers.value[index] as number >= MAX) ? pickedNumbers.value[index] = MIN : (pickedNumbers.value[index] as number)++
 }
 
 const onDownArrowClick = (index: number) => {
   if (pickedNumbers.value[index] === null) {
     return pickedNumbers.value[index] = 0
   }
-  pickedNumbers.value[index] <= MIN ? pickedNumbers.value[index] = MAX : pickedNumbers.value[index]--
+  pickedNumbers.value[index] as number <= MIN ? pickedNumbers.value[index] = MAX : (pickedNumbers.value[index] as number)--
 }
 
 </script>
