@@ -21,9 +21,9 @@ const isDisabled = computed(() => pickedNumbers.value.some(number => number === 
 
 const resetPickedNumbers = () => pickedNumbers.value = Array(NUMBERS_COUNT).fill(null)
 
-const onSubmit = async () => {
+const onSubmit = () => {
   emit('submit', pickedNumbers.value)
-  await resetPickedNumbers()
+  resetPickedNumbers()
   inputFieldRef.value?.[0]?.focus()
 }
 
