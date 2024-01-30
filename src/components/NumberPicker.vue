@@ -23,8 +23,8 @@ const resetPickedNumbers = () => pickedNumbers.value = Array(NUMBERS_COUNT).fill
 
 const onSubmit = () => {
   emit('submit', pickedNumbers.value)
-  resetPickedNumbers()
   inputFieldRef.value?.[0]?.focus()
+  resetPickedNumbers()
 }
 
 const validate = (event: Event, index: number) => {

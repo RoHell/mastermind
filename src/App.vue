@@ -121,13 +121,14 @@ const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
         />
       </TransitionGroup>
     </TransitionGroup>
-
-    <button
-      v-else
-      type="button"
-      class="mastermind__play"
-      @click="startGame"
-    >Play</button>
+    <div v-else class="mastermind__intro">
+      v 0.1
+      <button
+        type="button"
+        class="mastermind__play"
+        @click="startGame"
+      >Play</button>
+    </div>
   </main>
 </template>
 
@@ -175,6 +176,11 @@ main {
     overflow: auto;
     padding: 0.5rem 1rem 2rem;
   }
+
+  &__intro {
+    margin: auto;
+  }
+
   &__play {
     border-radius: 8px;
     padding: 0.6em 1.2em;
@@ -183,7 +189,6 @@ main {
     font-family: inherit;
     background-color: var(--text-color);
     color: var(--background-color);
-    margin: auto;
   }
 
   &__logo {
