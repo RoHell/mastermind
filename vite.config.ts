@@ -12,7 +12,7 @@ export default defineConfig({
         name: 'Mastermind Game',
         short_name: 'Mastermind',
         description: 'Simple mastermind game',
-        theme_color: '#ffffff',
+        theme_color: '#d4e2ff',
         icons: [
           {
             src: "img/icons/windows11/SmallTile.scale-100.png",
