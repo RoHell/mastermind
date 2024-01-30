@@ -76,7 +76,6 @@ const onDownArrowClick = (index: number) => {
           type="number"
           :max="MAX"
           :min="MIN"
-          :tabindex="index"
           class="number-picker__input"
           @keydown="validate($event, index)"
           @keyup.delete="onDeleteKeyPress(index)"
