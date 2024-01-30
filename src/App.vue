@@ -24,7 +24,7 @@ const startGame = () => {
   generateTargetNumber()
 }
 
-const calculatePoints = async (pickedNumbers: number[]) => {
+const calculatePoints = (pickedNumbers: number[]) => {
   let hitResults: number[] = Array(NUMBERS_COUNT).fill(0)
 
   targetNumbers.value?.forEach((targetNumber: number, index: number) => {
@@ -38,7 +38,7 @@ const calculatePoints = async (pickedNumbers: number[]) => {
   })
 
   const points = hitResults.reduce((a, b) => a + b, 0)
-  await addHit({ numbers: pickedNumbers, points})
+  addHit({ numbers: pickedNumbers, points})
 }
 
 const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
