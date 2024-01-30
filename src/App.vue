@@ -124,6 +124,7 @@ const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
 
     <button
       v-else
+      type="button"
       class="mastermind__play"
       @click="startGame"
     >Play</button>
