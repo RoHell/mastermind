@@ -34,30 +34,20 @@ const startGame = () => {
   generateTargetNumber()
 }
 
-const calculatePoints = async (pickedNumbers: number[]) => {
-  await findExactHits(pickedNumbers)
-  findHalfHits(pickedNumbers)
-  
-  const points = hitResults.value.reduce((a, b) => a + b, 0)
-  addResult({ numbers: pickedNumbers, points})
-  if (isWin.value) vibrate()
-}
-
-const findExactHits = (pickedNumbers: number[]) => {
-  targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
-    if (targetNumber === pickedNumbers[targetIndex]) hitResults.value[targetIndex] = 1
-  })
-}
-
-const findHalfHits = (pickedNumbers: number[]) => {
+const calculatePoints = (pickedNumbers: number[]) => {
   targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
     const pickIndex = pickedNumbers.findIndex(pickedNumber => pickedNumber === targetNumber)
     const isHalfHit = pickIndex > -1
     const isHitResultIndexEmpty = hitResults.value[targetIndex] === 0
-    if (isHalfHit && isHitResultIndexEmpty) {
+    if (targetNumber === pickedNumbers[targetIndex]) hitResults.value[targetIndex] = 1
+    else if (isHalfHit && isHitResultIndexEmpty) {
       hitResults.value[pickIndex] = 0.5
     }
   })
+  
+  const points = hitResults.value.reduce((a, b) => a + b, 0)
+  addResult({ numbers: pickedNumbers, points})
+  if (isWin.value) vibrate()
 }
 
 const addResult = (hit: HitInterface) => {
@@ -143,7 +133,7 @@ const addResult = (hit: HitInterface) => {
       </TransitionGroup>
     </TransitionGroup>
     <div v-else class="mastermind__intro">
-      v 0.7
+      v 0.8
       <button
         type="button"
         class="mastermind__play"
