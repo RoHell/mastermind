@@ -170,6 +170,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 2.3rem;
     height: calc(100% - 2*var(--top-bar-height));
     margin: var(--top-bar-height) 0;
   }
@@ -179,9 +180,9 @@ main {
     flex-direction: column-reverse;
     align-items: center;
     gap: 0.5rem;
-    margin-top: auto;
+    margin: auto 0 -2.3rem;
     overflow: auto;
-    padding: 0.5rem 1rem 0;
+    padding: 0.5rem 0 0;
   }
 
   &__intro {
@@ -211,6 +212,7 @@ main {
   &__win {
     display: flex;
     justify-content: center;
+    margin-top: 2.3rem;
   }
 }
 
