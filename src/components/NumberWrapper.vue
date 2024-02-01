@@ -58,6 +58,7 @@ defineProps<Props>()
     width: 2.3rem;
     height: 2.3rem;
     border: 1px solid;
+    box-sizing: border-box;
   }
 
   &__left {

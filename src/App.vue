@@ -38,10 +38,16 @@ const calculatePoints = (pickedNumbers: number[]) => {
   })
 
   const points = hitResults.reduce((a, b) => a + b, 0)
+  console.log('points', points)
+  console.log('pickedNumbers', pickedNumbers)
   addHit({ numbers: pickedNumbers, points})
 }
 
-const addHit = (hit: HitInterface) => hitsList.value.unshift(hit)
+const addHit = (hit: HitInterface) => {
+  console.log('hitsList.value--1', hitsList.value)
+  hitsList.value.unshift(hit)
+  console.log('hitsList.value--2', hitsList.value)
+}
 </script>
 
 <template>
@@ -172,9 +178,9 @@ main {
     flex-direction: column-reverse;
     align-items: center;
     gap: 0.5rem;
-    margin: auto 0 -2rem;
+    margin-top: auto;
     overflow: auto;
-    padding: 0.5rem 1rem 2rem;
+    padding: 0.5rem 1rem 0;
   }
 
   &__intro {

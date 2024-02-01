@@ -13,6 +13,10 @@ export const useNumbers = () => {
   const generateTargetNumber = () => {
     targetNumbers.value = Array.from({ length: NUMBERS_COUNT }, () => Math.floor(Math.random() * NUMBERS_RANGE))
   };
+
+  const numbersRange = (start = 1, stop = MAX, step = 1) => [0 , ...Array.from({ length: (stop - start) / 1 + step }, (_,index) => stop - index * step)];
+  // const numbersRange = (start = MAX, stop = MIN, step = 1) => Array.from({ length: (s - start) / 1 + step }, (_,index) => start + index * step);
+
   return {
     NUMBERS_COUNT,
     NUMBERS_RANGE,
@@ -21,5 +25,6 @@ export const useNumbers = () => {
     hitsList,
     targetNumbers,
     generateTargetNumber,
+    numbersRange,
   }
 }

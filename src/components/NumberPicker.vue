@@ -1,121 +1,141 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useNumbers } from '../composables'
 
 import NumberWrapper from './NumberWrapper.vue'
-import { PickedNumbersType } from '../types';
+
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { useVibrate } from '@vueuse/core'
+import 'swiper/css';
+import 'swiper/css/navigation'
 
 const emit = defineEmits(['submit'])
 
 const {
-  MIN,
-  MAX,
   NUMBERS_COUNT,
+  NUMBERS_RANGE,
+  numbersRange,
 } = useNumbers()
 
-const inputFieldRef = ref<{[key: string]: HTMLElement | null}>({})
-const isDeleting = ref(false)
-const pickedNumbers = ref<PickedNumbersType>(Array(NUMBERS_COUNT).fill(null))
+const { vibrate } = useVibrate({ pattern: [300, 100, 300] })
 
-const isDisabled = computed(() => pickedNumbers.value.some(number => number === null || number === ''))
+const SLIDES_PER_VIEW = 3
 
-const resetPickedNumbers = () => pickedNumbers.value = Array(NUMBERS_COUNT).fill(null)
+const pickedNumbers = ref<number[]>(Array(NUMBERS_COUNT).fill(0))
 
 const onSubmit = () => {
+  console.log('pickedNumbers.value', pickedNumbers.value)
   emit('submit', pickedNumbers.value)
-  resetPickedNumbers()
-  // inputFieldRef.value?.[0]?.focus()
-  inputFieldRef.value?.[NUMBERS_COUNT - 1]?.blur()
+  pickedNumbers.value = [...pickedNumbers.value]
 }
 
-const validate = (event: Event, index: number) => {
-  setTimeout(() => {
-    const target = event.target as HTMLInputElement
-    if (Number(target.value) > MAX) pickedNumbers.value[index] = Number(String(pickedNumbers.value[index]).slice(-1))
-    if (Number(target.value) < MIN) pickedNumbers.value[index] = MIN
-    if (index < (NUMBERS_COUNT - 1) && !isDeleting.value) inputFieldRef.value?.[index + 1]?.focus()
-    if (index === 0) isDeleting.value = false
-  }, 0)
+const onActiveIndexChange = (event: any, index: number) => {
+  vibrate()
+  pickedNumbers.value[index] = event.realIndex ? NUMBERS_RANGE - event.realIndex : event.realIndex
 }
 
-const onDeleteKeyPress = (index: number) => {
-  inputFieldRef.value?.[index - 1]?.focus()
-  isDeleting.value = true
-}
-
-const onUpArrowClick = (index: number) => {
-  (pickedNumbers.value[index] as number >= MAX) ? pickedNumbers.value[index] = MIN : (pickedNumbers.value[index] as number)++
-}
-
-const onDownArrowClick = (index: number) => {
-  if (pickedNumbers.value[index] === null) {
-    return pickedNumbers.value[index] = 0
-  }
-  pickedNumbers.value[index] as number <= MIN ? pickedNumbers.value[index] = MAX : (pickedNumbers.value[index] as number)--
+const onSlideClick = (number: number, index: number) => {
+  pickedNumbers.value[index] = number
 }
 
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
+  <div class="swipers">
     <NumberWrapper class="number-picker" :numbers="pickedNumbers">
       <template #number="{ index }">
-        <button
-          type="button"
-          class="number-picker__chevron number-picker__chevron--up"
-          @click="onUpArrowClick(index)"
+        <swiper
+          direction="vertical"
+          :slides-per-view="SLIDES_PER_VIEW"
+          centeredSlides
+          @active-index-change="onActiveIndexChange($event, index)"
+          watch-slides-progress
+          loop
+          class="swiper"
         >
-          <img
-            src="../assets/icons/chevron-up.svg"
-            class="number-picker__chevron"
-          />
-        </button>
-        <input
-          :ref="(el) => (inputFieldRef[index] = el as HTMLElement)"
-          v-model="pickedNumbers[index]"
-          type="number"
-          :max="MAX"
-          :min="MIN"
-          class="number-picker__input"
-          @keydown="validate($event, index)"
-          @keyup.delete="onDeleteKeyPress(index)"
-        />
-        <button
-          type="button"
-          class="number-picker__chevron number-picker__chevron--down"
-          @click="onDownArrowClick(index)"
-        >
-          <img
-            src="../assets/icons/chevron-down.svg"
-            class="number-picker__chevron"
-          />
-        </button>
+          <swiper-slide
+            v-for="number in numbersRange()"
+            zoom
+            @click="onSlideClick(number, index)"
+          >
+            {{ number  }}
+          </swiper-slide>
+        </swiper>
       </template>
-
-    <template #right>
-      <button
-        :disabled="isDisabled"
-        class="number-picker__submit"
-      >
-        <img
-          src="../assets/icons/play.svg"
-          class="number-picker__submit-icon"
+      <template #right>
+        <button
+          type="button"
+          class="number-picker__submit"
+          @click="onSubmit"
         >
-      </button>
+          <img
+            src="../assets/icons/play.svg"
+            class="number-picker__submit-icon"
+          >
+        </button>
       </template>
     </NumberWrapper>
-  </form>
+  </div>
   
 </template>
 
 <style lang="scss" scoped>
+
+.swipers {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.swiper {
+  width: 2.3rem;
+  height: calc(v-bind(SLIDES_PER_VIEW)*2.3rem);
+}
+
+.swiper-slide {
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  box-sizing: border-box;
+  transition: 0.2s ease-in-out;
+
+  &-prev, &-next {
+    opacity: 0.4
+  }
+  &-prev {
+    align-items: flex-end;
+  }
+  &-active {
+    font-size: 1.5rem;
+    opacity: 1;
+  }
+  &-next {
+    align-items: flex-start;
+  }
+}
 .number-wrapper {
   &:deep(.number-wrapper__digit) {
-    background-color: rgba(white, 0.5);
+    height: auto;
+    background-color: transparent;
+    border: none;
+    position: relative;
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      top: 33.33%;
+      height: 2.3rem;
+      border: 1px solid;
+      width: 100%;
+      box-sizing: border-box;
+    }
   }
 }
 .number-picker {
   &__submit {
+    width: 2.3rem;
+    height: 2.3rem;
     background-color: var(--background-color);
     transition: 0.2s ease-in;
     &:disabled {
@@ -128,22 +148,6 @@ const onDownArrowClick = (index: number) => {
     width: 100%;
     height: 100%;
     background-color: var(--background-color);
-  }
-
-  &__chevron {
-    width: calc(100% + 2px);
-    height: 100%;
-    padding: 1px transparent;
-    &:disabled {
-      pointer-events: none;
-      opacity: 0.3;
-    }
-    &--up {
-      background-image: linear-gradient(transparent, var(--background-color) 40%);
-    }
-    &--down {
-      background-image: linear-gradient(var(--background-color), transparent 40%);
-    }
   }
 }
 </style>
