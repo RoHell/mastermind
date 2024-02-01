@@ -8,6 +8,8 @@ const MAX = NUMBERS_RANGE - 1
 
 const pickedNumbers = ref<number[]>(Array(NUMBERS_COUNT).fill(0))
 
+const gameNumber = ref(0)
+
 export const useNumbers = () => {
   const hitsList = ref<HitInterface[]>([])
   const targetNumbers = ref<number[]>([])
@@ -31,6 +33,7 @@ export const useNumbers = () => {
     hitsList,
     targetNumbers,
     pickedNumbers,
+    gameNumber,
     generateTargetNumber,
     numbersRange,
     resetPickedNumbers

@@ -14,6 +14,7 @@ const {
   NUMBERS_RANGE,
   numbersRange,
   pickedNumbers,
+  gameNumber,
 } = useNumbers()
 
 const SLIDES_PER_VIEW = 3
@@ -38,6 +39,7 @@ const onSlideClick = (number: number, index: number) => {
     <NumberWrapper class="number-picker" :numbers="pickedNumbers">
       <template #number="{ index }">
         <swiper
+          :key="gameNumber"
           direction="vertical"
           :slides-per-view="SLIDES_PER_VIEW"
           centeredSlides

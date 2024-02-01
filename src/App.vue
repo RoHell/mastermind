@@ -18,6 +18,7 @@ const {
   targetNumbers,
   resetPickedNumbers,
   generateTargetNumber,
+  gameNumber,
  } = useNumbers()
 
 const { vibrate } = useVibrate({ pattern: [300, 100, 300] })
@@ -29,6 +30,7 @@ const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].poi
 const startGame = () => {
   hitsList.value = []
   resetPickedNumbers()
+  gameNumber.value++
   generateTargetNumber()
 }
 
