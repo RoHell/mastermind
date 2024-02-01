@@ -92,12 +92,13 @@ const onSlideClick = (number: number, index: number) => {
   font-size: 0.75rem;
   display: flex;
   justify-content: center;
-  opacity: 0.4;
+  opacity: 0;
   box-sizing: border-box;
-  transition: 0.3s ease-in-out;
+  transition: 0.4s ease-in-out;
 
   &-prev, &-next {
     font-size: 1rem;
+    opacity: 0.5;
   }
   &-prev {
     align-items: flex-end;
