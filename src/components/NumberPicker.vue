@@ -47,11 +47,11 @@ const onSlideClick = (number: number, index: number) => {
           @active-index-change="onActiveIndexChange($event, index)"
           watch-slides-progress
           loop
+          zoom
           class="swiper"
         >
           <swiper-slide
             v-for="number in numbersRange()"
-            zoom
             @click="onSlideClick(number, index)"
           >
             {{ number  }}
@@ -90,15 +90,15 @@ const onSlideClick = (number: number, index: number) => {
 }
 
 .swiper-slide {
-  font-size: 1rem;
+  font-size: 0.75rem;
   display: flex;
   justify-content: center;
-  opacity: 0;
+  opacity: 0.4;
   box-sizing: border-box;
   transition: 0.2s ease-in-out;
 
   &-prev, &-next {
-    opacity: 0.4
+    font-size: 1rem;
   }
   &-prev {
     align-items: flex-end;
