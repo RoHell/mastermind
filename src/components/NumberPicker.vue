@@ -5,7 +5,7 @@ import { useNumbers } from '../composables'
 import NumberWrapper from './NumberWrapper.vue'
 
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { useVibrate } from '@vueuse/core'
+
 import 'swiper/css';
 import 'swiper/css/navigation'
 
@@ -17,20 +17,16 @@ const {
   numbersRange,
 } = useNumbers()
 
-const { vibrate } = useVibrate({ pattern: [300, 100, 300] })
-
 const SLIDES_PER_VIEW = 3
 
 const pickedNumbers = ref<number[]>(Array(NUMBERS_COUNT).fill(0))
 
 const onSubmit = () => {
-  console.log('pickedNumbers.value', pickedNumbers.value)
   emit('submit', pickedNumbers.value)
   pickedNumbers.value = [...pickedNumbers.value]
 }
 
 const onActiveIndexChange = (event: any, index: number) => {
-  vibrate()
   pickedNumbers.value[index] = event.realIndex ? NUMBERS_RANGE - event.realIndex : event.realIndex
 }
 

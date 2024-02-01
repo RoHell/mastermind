@@ -10,12 +10,16 @@ import NumberTarget from './components/NumberTarget.vue'
 import { useNumbers } from './composables'
 import { HitInterface } from './types'
 
+import { useVibrate } from '@vueuse/core'
+
 const {
   NUMBERS_COUNT,
   hitsList,
   targetNumbers,
   generateTargetNumber,
  } = useNumbers()
+
+const { vibrate } = useVibrate({ pattern: [300, 100, 300] })
 
 const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].points >= NUMBERS_COUNT))
 
@@ -35,18 +39,16 @@ const calculatePoints = (pickedNumbers: number[]) => {
 
     if (isExactHit) hitResults[index] = 1
     else if (isHalfHit && isHitResultIndexEmpty) hitResults[hitIndex] = 0.5
+
+    if (isWin.value) vibrate()
   })
 
   const points = hitResults.reduce((a, b) => a + b, 0)
-  console.log('points', points)
-  console.log('pickedNumbers', pickedNumbers)
   addHit({ numbers: pickedNumbers, points})
 }
 
 const addHit = (hit: HitInterface) => {
-  console.log('hitsList.value--1', hitsList.value)
   hitsList.value.unshift(hit)
-  console.log('hitsList.value--2', hitsList.value)
 }
 </script>
 
@@ -168,7 +170,6 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2.3rem;
     height: calc(100% - 2*var(--top-bar-height));
     margin: var(--top-bar-height) 0;
   }
