@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useNumbers } from '../composables'
 
 import NumberWrapper from './NumberWrapper.vue'
@@ -12,14 +11,12 @@ import 'swiper/css/navigation'
 const emit = defineEmits(['submit'])
 
 const {
-  NUMBERS_COUNT,
   NUMBERS_RANGE,
   numbersRange,
+  pickedNumbers,
 } = useNumbers()
 
 const SLIDES_PER_VIEW = 3
-
-const pickedNumbers = ref<number[]>(Array(NUMBERS_COUNT).fill(0))
 
 const onSubmit = () => {
   emit('submit', pickedNumbers.value)

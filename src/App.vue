@@ -16,6 +16,7 @@ const {
   NUMBERS_COUNT,
   hitsList,
   targetNumbers,
+  resetPickedNumbers,
   generateTargetNumber,
  } = useNumbers()
 
@@ -27,6 +28,7 @@ const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].poi
 
 const startGame = () => {
   hitsList.value = []
+  resetPickedNumbers()
   generateTargetNumber()
 }
 
@@ -134,13 +136,12 @@ const addResult = (hit: HitInterface) => {
         </div>
         <NumberPicker
           v-else
-          key="number-picker"
           @submit="calculatePoints"
         />
       </TransitionGroup>
     </TransitionGroup>
     <div v-else class="mastermind__intro">
-      v 0.5
+      v 0.6
       <button
         type="button"
         class="mastermind__play"
