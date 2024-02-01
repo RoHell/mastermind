@@ -124,7 +124,7 @@ const addResult = (hit: HitInterface) => {
       </TransitionGroup>
 
       <TransitionGroup
-        name="list"
+        name="fade"
         key="target-picker"
         tag="div"
       >
@@ -140,7 +140,7 @@ const addResult = (hit: HitInterface) => {
       </TransitionGroup>
     </TransitionGroup>
     <div v-else class="mastermind__intro">
-      v 0.4
+      v 0.5
       <button
         type="button"
         class="mastermind__play"
