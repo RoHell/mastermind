@@ -34,8 +34,8 @@ const startGame = () => {
   generateTargetNumber()
 }
 
-const calculatePoints = (pickedNumbers: number[]) => {
-  findExactHits(pickedNumbers)
+const calculatePoints = async (pickedNumbers: number[]) => {
+  await findExactHits(pickedNumbers)
   findHalfHits(pickedNumbers)
   
   const points = hitResults.value.reduce((a, b) => a + b, 0)
@@ -50,10 +50,10 @@ const findExactHits = (pickedNumbers: number[]) => {
 }
 
 const findHalfHits = (pickedNumbers: number[]) => {
-  targetNumbers.value?.forEach((targetNumber: number) => {
+  targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
     const pickIndex = pickedNumbers.findIndex(pickedNumber => pickedNumber === targetNumber)
     const isHalfHit = pickIndex > -1
-    const isHitResultIndexEmpty = hitResults.value[pickIndex] === 0
+    const isHitResultIndexEmpty = hitResults.value[targetIndex] === 0
     if (isHalfHit && isHitResultIndexEmpty) {
       hitResults.value[pickIndex] = 0.5
     }
