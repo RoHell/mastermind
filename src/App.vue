@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import TopBar from './components/TopBar.vue'
 import NumberHits from './components/NumberHits.vue'
@@ -21,6 +21,8 @@ const {
 
 const { vibrate } = useVibrate({ pattern: [300, 100, 300] })
 
+const hitResults = ref<number[]>(Array(NUMBERS_COUNT).fill(0))
+
 const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].points >= NUMBERS_COUNT))
 
 const startGame = () => {
@@ -29,26 +31,34 @@ const startGame = () => {
 }
 
 const calculatePoints = (pickedNumbers: number[]) => {
-  let hitResults: number[] = Array(NUMBERS_COUNT).fill(0)
-
-  targetNumbers.value?.forEach((targetNumber: number, index: number) => {
-    const hitIndex = pickedNumbers.findIndex(shotNumber => shotNumber === targetNumber)
-    const isExactHit = targetNumber === pickedNumbers[index]
-    const isHalfHit = hitIndex > -1
-    const isHitResultIndexEmpty = hitResults[hitIndex] === 0
-
-    if (isExactHit) hitResults[index] = 1
-    else if (isHalfHit && isHitResultIndexEmpty) hitResults[hitIndex] = 0.5
-
-    if (isWin.value) vibrate()
-  })
-
-  const points = hitResults.reduce((a, b) => a + b, 0)
-  addHit({ numbers: pickedNumbers, points})
+  findExactHits(pickedNumbers)
+  findHalfHits(pickedNumbers)
+  
+  const points = hitResults.value.reduce((a, b) => a + b, 0)
+  addResult({ numbers: pickedNumbers, points})
+  if (isWin.value) vibrate()
 }
 
-const addHit = (hit: HitInterface) => {
+const findExactHits = (pickedNumbers: number[]) => {
+  targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
+    if (targetNumber === pickedNumbers[targetIndex]) hitResults.value[targetIndex] = 1
+  })
+}
+
+const findHalfHits = (pickedNumbers: number[]) => {
+  targetNumbers.value?.forEach((targetNumber: number) => {
+    const pickIndex = pickedNumbers.findIndex(pickedNumber => pickedNumber === targetNumber)
+    const isHalfHit = pickIndex > -1
+    const isHitResultIndexEmpty = hitResults.value[pickIndex] === 0
+    if (isHalfHit && isHitResultIndexEmpty) {
+      hitResults.value[pickIndex] = 0.5
+    }
+  })
+}
+
+const addResult = (hit: HitInterface) => {
   hitsList.value.unshift(hit)
+  hitResults.value = Array(NUMBERS_COUNT).fill(0)
 }
 </script>
 

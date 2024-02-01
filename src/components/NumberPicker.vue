@@ -47,7 +47,6 @@ const onSlideClick = (number: number, index: number) => {
           @active-index-change="onActiveIndexChange($event, index)"
           watch-slides-progress
           loop
-          class="swiper"
         >
           <swiper-slide
             v-for="number in numbersRange()"
@@ -89,26 +88,21 @@ const onSlideClick = (number: number, index: number) => {
 }
 
 .swiper-slide {
-  font-size: 0.75rem;
+  font-size: 0.5rem;
   display: flex;
   justify-content: center;
+  align-items: center;
   opacity: 0;
   box-sizing: border-box;
-  transition: 0.4s ease-in-out;
+  transition: opacity 0.3s ease-in-out, font-size 0.1s ease;
 
   &-prev, &-next {
     font-size: 1rem;
     opacity: 0.5;
   }
-  &-prev {
-    align-items: flex-end;
-  }
   &-active {
     font-size: 1.5rem;
     opacity: 1;
-  }
-  &-next {
-    align-items: flex-start;
   }
 }
 .number-wrapper {
