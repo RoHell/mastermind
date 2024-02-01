@@ -47,7 +47,6 @@ const onSlideClick = (number: number, index: number) => {
           @active-index-change="onActiveIndexChange($event, index)"
           watch-slides-progress
           loop
-          zoom
           class="swiper"
         >
           <swiper-slide
@@ -95,7 +94,7 @@ const onSlideClick = (number: number, index: number) => {
   justify-content: center;
   opacity: 0.4;
   box-sizing: border-box;
-  transition: 0.2s ease-in-out;
+  transition: 0.3s ease-in-out;
 
   &-prev, &-next {
     font-size: 1rem;
