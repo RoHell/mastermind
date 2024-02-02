@@ -35,19 +35,30 @@ const startGame = () => {
 }
 
 const calculatePoints = (pickedNumbers: number[]) => {
-  targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
-    const pickIndex = pickedNumbers.findIndex(pickedNumber => pickedNumber === targetNumber)
-    const isHalfHit = pickIndex > -1
-    const isHitResultIndexEmpty = hitResults.value[targetIndex] === 0
-    if (targetNumber === pickedNumbers[targetIndex]) hitResults.value[targetIndex] = 1
-    else if (isHalfHit && isHitResultIndexEmpty) {
-      hitResults.value[pickIndex] = 0.5
-    }
-  })
+  findExactHits(pickedNumbers)
+  findHalfHits(pickedNumbers)
   
   const points = hitResults.value.reduce((a, b) => a + b, 0)
   addResult({ numbers: pickedNumbers, points})
   if (isWin.value) vibrate()
+}
+
+const findExactHits = (pickedNumbers: number[]) => {
+  targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
+    if (targetNumber === pickedNumbers[targetIndex]) hitResults.value[targetIndex] = 1
+  })
+}
+
+const findHalfHits = (pickedNumbers: number[]) => {
+  targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
+    const pickIndex = pickedNumbers.findIndex((pickedNumber, pickedIndex) => {
+      const isMatch = pickedNumber === targetNumber
+      const isNotExactMatch = targetNumber !== pickedNumbers[targetIndex]
+      const isResultIndexFree = !hitResults.value[pickedIndex]
+      return isMatch && isNotExactMatch && isResultIndexFree
+    })
+    if (pickIndex > -1) hitResults.value[pickIndex] = 0.5
+  })
 }
 
 const addResult = (hit: HitInterface) => {
@@ -117,9 +128,10 @@ const addResult = (hit: HitInterface) => {
         />
       </TransitionGroup>
 
-      <TransitionGroup
+      <Transition
         name="fade"
         key="target-picker"
+        mode="out-in"
         tag="div"
       >
         <div class="mastermind__win" v-if="isWin">
@@ -130,10 +142,10 @@ const addResult = (hit: HitInterface) => {
           v-else
           @submit="calculatePoints"
         />
-      </TransitionGroup>
+      </Transition>
     </TransitionGroup>
     <div v-else class="mastermind__intro">
-      v 0.8
+      v 0.01
       <button
         type="button"
         class="mastermind__play"
@@ -185,7 +197,7 @@ main {
     gap: 0.5rem;
     margin: auto 0 -2.3rem;
     overflow: auto;
-    padding: 0.5rem 0 0;
+    padding: 0.5rem 1rem 0;
   }
 
   &__intro {
