@@ -3,10 +3,10 @@ import { useNumbers } from '../composables'
 
 import NumberWrapper from './NumberWrapper.vue'
 
-import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Swiper, SwiperSlide } from 'swiper/vue'
 
-import 'swiper/css';
-import 'swiper/css/navigation'
+import 'swiper/scss'
+import 'swiper/scss/navigation'
 
 const emit = defineEmits(['submit'])
 
@@ -84,24 +84,54 @@ const onSlideClick = (number: number, index: number) => {
 .swiper {
   width: 2.3rem;
   height: calc(v-bind(SLIDES_PER_VIEW)*2.3rem);
+
+
+  // &:deep(.swiper-button-next), &:deep(.swiper-button-prev) {
+  //   right: 0;
+  //   left: 0;
+  //   transform: rotate(90deg) scale(0.5);
+  //   color: var(--text-color);
+  //   width: 100%;
+  // }
+
+  // &:deep(.swiper-button-next) {
+  //   bottom: -0.9rem;
+  //   margin-top: auto;
+  // }
+
+  // &:deep(.swiper-button-prev) {
+  //   top: 0.4rem;
+  // }
 }
 
 .swiper-slide {
-  font-size: 0.5rem;
+  font-size: 0rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
+  opacity: 0.3;
   box-sizing: border-box;
-  transition: opacity 0.3s ease-in-out, font-size 0.1s ease;
+  transition: opacity 0.3s ease-in-out, font-size 0.1s ease, transform 0.3s ease;
 
   &-prev, &-next {
-    font-size: 1rem;
+    font-size: 1.4rem;
     opacity: 0.5;
   }
+
+  &-prev {
+    transform-origin: center bottom;
+    transform: perspective(2.3rem) rotateX(20deg);
+  }
+
+  &-next {
+    transform-origin: center top;
+    transform: perspective(2.3rem) rotateX(-20deg);
+  }
+
   &-active {
     font-size: 1.5rem;
     opacity: 1;
+    transform: perspective(2.3rem) rotateX(0);
   }
 }
 .number-wrapper {
