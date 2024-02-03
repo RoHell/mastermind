@@ -145,7 +145,7 @@ const addResult = (hit: HitInterface) => {
       </Transition>
     </TransitionGroup>
     <div v-else class="mastermind__intro">
-      v 0.02
+      v 0.03
       <button
         type="button"
         class="mastermind__play"
