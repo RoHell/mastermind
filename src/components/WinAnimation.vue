@@ -11,7 +11,7 @@
 <style lang="scss" scoped>
 .win-animation {
   position: absolute;
-  bottom: -1.7rem;
+  bottom: 0rem;
 
   &__cup {
     width: 10rem;

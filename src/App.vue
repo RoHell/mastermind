@@ -14,6 +14,7 @@ import { useVibrate } from '@vueuse/core'
 
 const {
   NUMBERS_COUNT,
+  SLIDES_PER_VIEW,
   hitsList,
   targetNumbers,
   resetPickedNumbers,
@@ -133,6 +134,7 @@ const addResult = (hit: HitInterface) => {
         key="target-picker"
         mode="out-in"
         tag="div"
+        class="mastermind__target-picker"
       >
         <div class="mastermind__win" v-if="isWin">
           <NumberTarget :numbers="targetNumbers" key="number-target" />
@@ -227,7 +229,10 @@ main {
   &__win {
     display: flex;
     justify-content: center;
-    margin-top: 2.3rem;
+  }
+
+  &__target-picker {
+    height: calc(v-bind(SLIDES_PER_VIEW)*2.3rem);
   }
 }
 

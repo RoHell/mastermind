@@ -5,6 +5,7 @@ const NUMBERS_COUNT = 4
 const NUMBERS_RANGE = 10
 const MIN = 0
 const MAX = NUMBERS_RANGE - 1
+const SLIDES_PER_VIEW = 3
 
 const pickedNumbers = ref<number[]>(Array(NUMBERS_COUNT).fill(0))
 
@@ -30,6 +31,7 @@ export const useNumbers = () => {
     NUMBERS_RANGE,
     MIN,
     MAX,
+    SLIDES_PER_VIEW,
     hitsList,
     targetNumbers,
     pickedNumbers,

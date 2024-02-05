@@ -14,9 +14,8 @@ const {
   numbersRange,
   pickedNumbers,
   gameNumber,
+  SLIDES_PER_VIEW
 } = useNumbers()
-
-const SLIDES_PER_VIEW = 3
 
 const onSubmit = () => {
   emit('submit', pickedNumbers.value)
@@ -78,11 +77,11 @@ const onSlideClick = (number: number, index: number) => {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  height: 100%;
 }
 
 .swiper {
   width: 2.3rem;
-  height: calc(v-bind(SLIDES_PER_VIEW)*2.3rem);
 }
 
 .swiper-slide {
@@ -105,8 +104,9 @@ const onSlideClick = (number: number, index: number) => {
   }
 }
 .number-wrapper {
+  height: 100%;
   &:deep(.number-wrapper__digit) {
-    height: auto;
+    height: 100%;
     background-color: transparent;
     border: none;
     position: relative;
