@@ -81,7 +81,7 @@ const onSlideClick = (number: number, index: number) => {
 }
 
 .swiper {
-  width: 2.3rem;
+  width: var(--number-box-height);
 }
 
 .swiper-slide {
@@ -99,7 +99,7 @@ const onSlideClick = (number: number, index: number) => {
   }
   &-active {
     font-size: 1.5rem;
-    height: 2.3rem;
+    height: var(--number-box-height);
     opacity: 1;
   }
 }
@@ -114,7 +114,7 @@ const onSlideClick = (number: number, index: number) => {
       content: '';
       position: absolute;
       top: 33.33%;
-      height: 2.3rem;
+      height: var(--number-box-height);
       border: 1px solid;
       width: 100%;
       box-sizing: border-box;
@@ -123,8 +123,8 @@ const onSlideClick = (number: number, index: number) => {
 }
 .number-picker {
   &__submit {
-    width: 2.3rem;
-    height: 2.3rem;
+    width: var(--number-box-height);
+    height: var(--number-box-height);
     background-color: var(--background-color);
     transition: 0.2s ease-in;
     &:disabled {

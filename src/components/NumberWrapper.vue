@@ -56,15 +56,15 @@ defineProps<Props>()
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    width: 2.3rem;
-    height: 2.3rem;
+    width: var(--number-box-height);
+    height: var(--number-box-height);
     border: 1px solid;
     box-sizing: border-box;
   }
 
   &__left {
-    width: 2.3rem;
-    height: 2.3rem;
+    width: var(--number-box-height);
+    height: var(--number-box-height);
     display: flex;
     place-content: center;
     align-items: center;
@@ -73,8 +73,8 @@ defineProps<Props>()
   &__right {
     left: 100%;
     font-size: 1.5rem;
-    width: 2.3rem;
-    height: 2.3rem;
+    width: var(--number-box-height);
+    height: var(--number-box-height);
   }
 }
 /* Chrome, Safari, Edge, Opera */

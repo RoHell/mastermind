@@ -187,17 +187,19 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2.3rem;
-    height: calc(100% - 2*var(--top-bar-height));
-    margin: var(--top-bar-height) 0;
+    gap: var(--number-box-height);
+    height: calc(100% - var(--top-bar-height) - var(--number-box-height));
+    margin: var(--top-bar-height) 0 var(--number-box-height);
   }
 
   &__rounds {
     display: flex;
     flex-direction: column-reverse;
+    flex: 1;
     align-items: center;
     gap: 0.5rem;
-    margin: auto 0 -2.3rem;
+    margin-top: auto;
+    margin-bottom: calc(var(--number-box-height) * -1);
     overflow: auto;
     padding: 0.5rem 1rem 0;
   }

@@ -21,5 +21,6 @@ defineProps<Props>()
   font-weight: 700;
   background-color: white;
   width: 100%;
+  height: 100%;
 }
 </style>
