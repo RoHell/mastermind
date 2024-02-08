@@ -10,11 +10,10 @@ const SLIDES_PER_VIEW = 3
 const pickedNumbers = ref<number[]>(Array(NUMBERS_COUNT).fill(0))
 
 const gameNumber = ref(0)
+const targetNumbers = ref<number[]>([])
+const hitsList = ref<HitInterface[]>([])
 
 export const useNumbers = () => {
-  const hitsList = ref<HitInterface[]>([])
-  const targetNumbers = ref<number[]>([])
-  
   const generateTargetNumber = () => {
     targetNumbers.value = Array.from({ length: NUMBERS_COUNT }, () => Math.floor(Math.random() * NUMBERS_RANGE))
   };

@@ -18,7 +18,11 @@ defineProps<Props>()
         class="number-wrapper__digit"
       >
 
-        <slot name="number" :number="number" :index="index" />
+        <slot
+          name="number"
+          :number="number"
+          :index="index"
+        />
     </div>
     </div>
     <div class="number-wrapper__right">

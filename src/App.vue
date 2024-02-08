@@ -137,8 +137,8 @@ const addResult = (hit: HitInterface) => {
         class="mastermind__target-picker"
       >
         <div class="mastermind__win" v-if="isWin">
-          <NumberTarget :numbers="targetNumbers" key="number-target" />
-          <WinAnimation key="win-animation" />
+          <NumberTarget />
+          <WinAnimation />
         </div>
         <NumberPicker
           v-else
@@ -188,8 +188,8 @@ main {
     flex-direction: column;
     align-items: center;
     gap: var(--number-box-height);
-    height: calc(100% - var(--top-bar-height) - var(--number-box-height));
-    margin: var(--top-bar-height) 0 var(--number-box-height);
+    height: calc(100% - var(--top-bar-height));
+    margin: var(--top-bar-height) 0 1rem;
   }
 
   &__rounds {

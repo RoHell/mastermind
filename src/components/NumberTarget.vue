@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import NumberWrapper from './NumberWrapper.vue'
 
-interface Props {
-  numbers: number[]
-}
+import { useNumbers } from '../composables'
 
-defineProps<Props>()
+const { targetNumbers } = useNumbers()
 </script>
 
 <template>
-  <NumberWrapper :numbers="numbers">
+  <NumberWrapper :numbers="targetNumbers">
     <template #number="{ number }">
       <span class="target-numbers">{{ number }}</span>
     </template>
