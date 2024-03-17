@@ -6,6 +6,7 @@ import NumberHits from './components/NumberHits.vue'
 import NumberPicker from './components/NumberPicker.vue'
 import WinAnimation from './components/WinAnimation.vue'
 import NumberTarget from './components/NumberTarget.vue'
+import MenuDrawer from './components/MenuDrawer.vue'
 
 import { useNumbers } from './composables'
 import { HitInterface } from './types'
@@ -13,7 +14,7 @@ import { HitInterface } from './types'
 import { useVibrate } from '@vueuse/core'
 
 const {
-  NUMBERS_COUNT,
+  numbersCount,
   SLIDES_PER_VIEW,
   hitsList,
   targetNumbers,
@@ -24,9 +25,10 @@ const {
 
 const { vibrate } = useVibrate({ pattern: [300, 100, 300] })
 
-const hitResults = ref<number[]>(Array(NUMBERS_COUNT).fill(0))
+const hitResults = ref<number[]>(Array(numbersCount.value).fill(0))
+const isMenuDrawerOpen = ref(false)
 
-const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].points >= NUMBERS_COUNT))
+const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].points >= numbersCount.value))
 
 const startGame = () => {
   hitsList.value = []
@@ -64,7 +66,7 @@ const findHalfHits = (pickedNumbers: number[]) => {
 
 const addResult = (hit: HitInterface) => {
   hitsList.value.unshift(hit)
-  hitResults.value = Array(NUMBERS_COUNT).fill(0)
+  hitResults.value = Array(numbersCount.value).fill(0)
 }
 </script>
 
@@ -93,7 +95,7 @@ const addResult = (hit: HitInterface) => {
       <template #right>
         <button
           type="button"
-          @click=""
+          @click="isMenuDrawerOpen = true"
         >
           <img
             src="./assets/icons/more.svg"
@@ -155,6 +157,11 @@ const addResult = (hit: HitInterface) => {
       >Play</button>
     </div>
   </main>
+
+  <MenuDrawer
+    v-if="isMenuDrawerOpen"
+    @close="isMenuDrawerOpen = false"
+  />
 </template>
 
 <style lang="scss" scoped>
