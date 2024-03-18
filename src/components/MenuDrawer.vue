@@ -17,6 +17,13 @@ onMounted(() => {
   showContent.value = true
 })
 
+const onNumbersCountChange = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const count = +target?.value
+  setNumbersCount(count)
+
+}
+
 </script>
 
 <template>
@@ -44,7 +51,7 @@ onMounted(() => {
             id="numbers-count"
             :value="numbersCount"
             type="number"
-            @change="setNumbersCount($event.target?.value || NUMBERS_COUNT)"
+            @change="onNumbersCountChange"
           >
         </form>
       </div>
