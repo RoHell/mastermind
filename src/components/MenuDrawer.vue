@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 import { useNumbers } from '../composables'
 
 const emit = defineEmits(['close'])
-const { numbersCount, setNumbersCount } = useNumbers()
+const { numbersCount, setNumbersCount, NUMBERS_COUNT } = useNumbers()
 
 const showContent = ref(false)
 
@@ -44,7 +44,7 @@ onMounted(() => {
             id="numbers-count"
             :value="numbersCount"
             type="number"
-            @change="setNumbersCount($event.target.value)"
+            @change="setNumbersCount($event.target?.value || NUMBERS_COUNT)"
           >
         </form>
       </div>

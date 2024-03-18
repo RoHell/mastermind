@@ -35,6 +35,7 @@ export const useNumbers = () => {
 
   return {
     numbersCount,
+    NUMBERS_COUNT,
     NUMBERS_RANGE,
     MIN,
     MAX,
