@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 import { useNumbers } from '../composables'
 
 const emit = defineEmits(['close'])
-const { numbersCount, setNumbersCount, NUMBERS_COUNT } = useNumbers()
+const { numbersCount, setNumbersCount } = useNumbers()
 
 const showContent = ref(false)
 
