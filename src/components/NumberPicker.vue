@@ -10,7 +10,7 @@ import 'swiper/css'
 const emit = defineEmits(['submit'])
 
 const {
-  NUMBERS_RANGE,
+  DEFAULT_NUMBERS_RANGE,
   numbersRange,
   pickedNumbers,
   gameNumber,
@@ -23,7 +23,7 @@ const onSubmit = () => {
 }
 
 const onActiveIndexChange = (event: any, index: number) => {
-  pickedNumbers.value[index] = event.realIndex ? NUMBERS_RANGE - event.realIndex : event.realIndex
+  pickedNumbers.value[index] = event.realIndex ? DEFAULT_NUMBERS_RANGE - event.realIndex : event.realIndex
 }
 
 const onSlideClick = (number: number, index: number) => {
@@ -34,7 +34,11 @@ const onSlideClick = (number: number, index: number) => {
 
 <template>
   <div class="swipers">
-    <NumberWrapper class="number-picker" :numbers="pickedNumbers">
+    <NumberWrapper
+      :key="gameNumber"
+      :numbers="pickedNumbers"
+      class="number-picker"
+    >
       <template #number="{ index }">
         <swiper
           :key="gameNumber"
@@ -46,7 +50,7 @@ const onSlideClick = (number: number, index: number) => {
           loop
         >
           <swiper-slide
-            v-for="number in numbersRange()"
+            v-for="number in numbersRange"
             @click="onSlideClick(number, index)"
           >
             {{ number  }}

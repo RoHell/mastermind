@@ -144,6 +144,7 @@ const addResult = (hit: HitInterface) => {
         </div>
         <NumberPicker
           v-else
+          :key="numbersCount"
           @submit="calculatePoints"
         />
       </Transition>
@@ -161,6 +162,7 @@ const addResult = (hit: HitInterface) => {
   <MenuDrawer
     v-if="isMenuDrawerOpen"
     @close="isMenuDrawerOpen = false"
+    @change="startGame"
   />
 </template>
 
