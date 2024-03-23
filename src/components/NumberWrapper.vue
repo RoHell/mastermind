@@ -44,7 +44,7 @@ defineProps<Props>()
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    height: 100%;
+    height: auto;
     flex-grow: 1;
 
     :slotted(input) {
