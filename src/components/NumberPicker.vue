@@ -84,10 +84,6 @@ const onSlideClick = (number: number, index: number) => {
   height: 100%;
 }
 
-.swiper {
-  width: var(--number-box-height);
-}
-
 .swiper-slide {
   font-size: 0.5rem;
   display: flex;
@@ -110,25 +106,25 @@ const onSlideClick = (number: number, index: number) => {
 .number-wrapper {
   height: 100%;
   &:deep(.number-wrapper__digit) {
-    height: 100%;
     background-color: transparent;
     border: none;
     position: relative;
     &:before, &:after {
       content: '';
       position: absolute;
-      top: 33.33%;
-      height: var(--number-box-height);
       border: 1px solid;
       width: 100%;
       box-sizing: border-box;
+      aspect-ratio: 1;
     }
   }
 }
 .number-picker {
   &__submit {
-    width: var(--number-box-height);
-    height: var(--number-box-height);
+    max-width: var(--number-box-height);
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
     background-color: var(--background-color);
     transition: 0.2s ease-in;
     &:disabled {

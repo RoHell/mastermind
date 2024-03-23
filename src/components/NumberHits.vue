@@ -29,3 +29,12 @@ defineProps<Props>()
     </template>
   </NumberWrapper>
 </template>
+
+<style lang="scss" scoped>
+.number-wrapper {
+  &:deep(.number-wrapper__digit) {
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
+</style>

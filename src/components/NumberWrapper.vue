@@ -33,6 +33,7 @@ defineProps<Props>()
 
 <style lang="scss" scoped>
 .number-wrapper {
+  width: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -41,8 +42,10 @@ defineProps<Props>()
   &__digits {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     height: 100%;
+    flex-grow: 1;
 
     :slotted(input) {
       width: 100%;
@@ -51,6 +54,7 @@ defineProps<Props>()
       background-color: transparent;
       border: none;
       font-size: 1.5rem;
+      aspect-ratio: 1;
     }
   }
 
@@ -60,25 +64,28 @@ defineProps<Props>()
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    width: var(--number-box-height);
-    height: var(--number-box-height);
+    width: 100%;
+    height: 100%;
+    max-width: var(--number-box-height);
     border: 1px solid;
     box-sizing: border-box;
   }
 
   &__left {
-    width: var(--number-box-height);
+    min-width: var(--number-box-height);
     height: var(--number-box-height);
     display: flex;
     place-content: center;
     align-items: center;
+    padding-left: 1rem;
   }
 
   &__right {
     left: 100%;
     font-size: 1.5rem;
-    width: var(--number-box-height);
+    min-width: var(--number-box-height);
     height: var(--number-box-height);
+    padding-right: 1rem;
   }
 }
 /* Chrome, Safari, Edge, Opera */

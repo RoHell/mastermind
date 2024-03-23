@@ -197,6 +197,7 @@ main {
     flex-direction: column;
     align-items: center;
     gap: var(--number-box-height);
+    width: 100%;
     height: calc(100% - var(--top-bar-height));
     margin: var(--top-bar-height) 0 1rem;
   }
@@ -210,7 +211,7 @@ main {
     margin-top: auto;
     margin-bottom: calc(var(--number-box-height) * -1);
     overflow: auto;
-    padding: 0.5rem 1rem 0;
+    padding: 0.5rem 0 0;
   }
 
   &__intro {
@@ -243,6 +244,7 @@ main {
   }
 
   &__target-picker {
+    width: 100%;
     height: calc(v-bind(SLIDES_PER_VIEW)*2.3rem);
   }
 }
