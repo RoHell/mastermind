@@ -75,7 +75,6 @@ const onSlideClick = (number: number, index: number) => {
 </template>
 
 <style lang="scss" scoped>
-
 .swipers {
   position: relative;
   display: flex;
@@ -84,13 +83,17 @@ const onSlideClick = (number: number, index: number) => {
   height: 100%;
 }
 
+.swiper {
+  width: 100%;
+}
+
 .swiper-slide {
   font-size: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   opacity: 0;
-  box-sizing: border-box;
+  // box-sizing: border-box;
   transition: opacity 0.3s ease-in-out, font-size 0.1s ease;
 
   &-prev, &-next {
@@ -99,7 +102,7 @@ const onSlideClick = (number: number, index: number) => {
   }
   &-active {
     font-size: 1.5rem;
-    height: var(--number-box-height);
+    // height: var(--number-box-height);
     opacity: 1;
   }
 }
