@@ -3,7 +3,7 @@ import { HitInterface } from '../types'
 
 const DEFAULT_NUMBERS_COUNT = 4
 const DEFAULT_NUMBERS_RANGE = 10
-const MIN = 0
+const MIN = 1
 const MAX = DEFAULT_NUMBERS_RANGE - 1
 const SLIDES_PER_VIEW = 3
 
@@ -25,7 +25,7 @@ export const useNumbers = () => {
     const step = 1
     const rangeLength = (stop - start) / 1 + step
     const numbers = Array.from({ length: rangeLength }, (_,index) => stop - index * step)
-    return [MIN , ...numbers]
+    return [0 , ...numbers]
   });
   const resetPickedNumbers = () => {
     pickedNumbers.value = Array(numbersCount.value).fill(0)

@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 import { useNumbers } from '../composables'
 
 const emit = defineEmits(['close'])
-const { numbersCount, setNumbersCount } = useNumbers()
+const { numbersCount, setNumbersCount, MIN, MAX } = useNumbers()
 
 const showContent = ref(false)
 
@@ -23,7 +23,6 @@ const onNumbersCountChange = (event: Event) => {
   setNumbersCount(count)
 
 }
-
 </script>
 
 <template>
@@ -43,15 +42,20 @@ const onNumbersCountChange = (event: Event) => {
         <button class="drawer__close" @click="handleClose">
           close
         </button>
-        <form>
+        <form class="drawer__numbers-count">
           <label for="numbers-count">
-            numbers count:
+            numbers count
           </label>
+          <span>
+            {{ numbersCount }}
+          </span>
           <input
             id="numbers-count"
             :value="numbersCount"
-            type="number"
-            @change="onNumbersCountChange"
+            type="range"
+            :min="MIN"
+            :max="MAX"
+            @input="onNumbersCountChange"
           >
         </form>
       </div>
@@ -89,6 +93,11 @@ const onNumbersCountChange = (event: Event) => {
   &__close {
     margin-left: auto;
     margin-bottom: 2rem;
+  }
+
+  &__numbers-count {
+    display: flex;
+    flex-direction: column;
   }
 
   .slide-right-enter-active,
