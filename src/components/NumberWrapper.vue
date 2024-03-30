@@ -8,9 +8,9 @@ interface Props {
 defineProps<Props>()
 
 const setFontSize = () => {
-  const digitContainers = computed(() => document.querySelectorAll('.number-wrapper__digit') || [])
+  const digitContainers = computed(() => document.querySelectorAll('.number-wrapper__digit') || []) as any
   if (!digitContainers.value) return
-  digitContainers.value.forEach((digit) => {
+  digitContainers.value.forEach((digit: any) => {
     const relFonSize = digit.offsetWidth*0.05
     digit.style.fontSize = relFonSize + 'rem'
     digit.style.height = digit.offsetWidth * 3 + 'px'
