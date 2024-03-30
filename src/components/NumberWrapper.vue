@@ -1,9 +1,24 @@
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
+
 interface Props {
   numbers: number[] | string[]
 }
 
 defineProps<Props>()
+
+const setFontSize = () => {
+  const digitContainers = computed(() => document.querySelectorAll('.number-wrapper__digit') || [])
+  if (!digitContainers.value) return
+  digitContainers.value.forEach((digit) => {
+    const relFonSize = digit.offsetWidth*0.05
+    digit.style.fontSize = relFonSize + 'rem'
+    digit.style.height = digit.offsetWidth * 3 + 'px'
+
+  })
+}
+
+onMounted(() => setFontSize())
 </script>
 
 <template>
@@ -15,6 +30,7 @@ defineProps<Props>()
       <div
         v-for="(number, index) in numbers"
         :key="index"
+        ref="digitRef"
         class="number-wrapper__digit"
       >
 
@@ -44,7 +60,6 @@ defineProps<Props>()
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    height: 100%;
     flex-grow: 1;
 
     :slotted(input) {
@@ -53,7 +68,7 @@ defineProps<Props>()
       text-align: center;
       background-color: transparent;
       border: none;
-      font-size: 1.5rem;
+      font-size: 1em;
       aspect-ratio: 1;
     }
   }
@@ -63,29 +78,33 @@ defineProps<Props>()
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
     width: 100%;
-    height: 100%;
     max-width: var(--number-box-height);
     border: 1px solid;
     box-sizing: border-box;
   }
 
   &__left {
-    min-width: var(--number-box-height);
-    height: var(--number-box-height);
     display: flex;
     place-content: center;
     align-items: center;
     padding-left: 1rem;
+    width: 100%;
+    height: 100%;
+    max-width: var(--number-box-height);
+    max-height: var(--number-box-height);
   }
 
   &__right {
+    display: flex;
+    place-content: center;
+    align-items: center;
     left: 100%;
-    font-size: 1.5rem;
-    min-width: var(--number-box-height);
-    height: var(--number-box-height);
     padding-right: 1rem;
+    width: 100%;
+    height: 100%;
+    max-width: var(--number-box-height);
+    max-height: var(--number-box-height);
   }
 }
 /* Chrome, Safari, Edge, Opera */

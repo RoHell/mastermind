@@ -212,6 +212,7 @@ main {
     margin-bottom: calc(var(--number-box-height) * -1);
     overflow: auto;
     padding: 0.5rem 0 0;
+    width: 100%;
   }
 
   &__intro {

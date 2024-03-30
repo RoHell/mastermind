@@ -33,8 +33,9 @@ defineProps<Props>()
 <style lang="scss" scoped>
 .number-wrapper {
   &:deep(.number-wrapper__digit) {
-    height: auto;
+    font-size: 1em;
     aspect-ratio: 1;
+    height: 100% !important;
   }
 }
 </style>

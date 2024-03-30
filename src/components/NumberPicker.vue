@@ -29,7 +29,6 @@ const onActiveIndexChange = (event: any, index: number) => {
 const onSlideClick = (number: number, index: number) => {
   pickedNumbers.value[index] = number
 }
-
 </script>
 
 <template>
@@ -88,12 +87,10 @@ const onSlideClick = (number: number, index: number) => {
 }
 
 .swiper-slide {
-  font-size: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
   opacity: 0;
-  // box-sizing: border-box;
   transition: opacity 0.3s ease-in-out, font-size 0.1s ease;
 
   &-prev, &-next {
@@ -101,8 +98,7 @@ const onSlideClick = (number: number, index: number) => {
     opacity: 0.5;
   }
   &-active {
-    font-size: 1.5rem;
-    // height: var(--number-box-height);
+    font-size: 1em;
     opacity: 1;
   }
 }
@@ -117,7 +113,6 @@ const onSlideClick = (number: number, index: number) => {
       position: absolute;
       border: 1px solid;
       width: 100%;
-      box-sizing: border-box;
       aspect-ratio: 1;
     }
   }
