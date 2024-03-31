@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeUnmount, onMounted } from 'vue';
 
 interface Props {
   numbers: number[] | string[]
@@ -18,7 +18,13 @@ const setFontSize = () => {
   })
 }
 
-onMounted(() => setFontSize())
+onMounted(() => {
+  setFontSize()
+  document.addEventListener('resize', setFontSize)
+})
+
+onBeforeUnmount(() => document.removeEventListener('resize', setFontSize))
+
 </script>
 
 <template>
