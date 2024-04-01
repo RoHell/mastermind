@@ -15,6 +15,7 @@ const numbersCount = ref<number>(DEFAULT_NUMBERS_COUNT)
 export const useNumbers = () => {
   
   const pickedNumbers = ref<number[]>(Array(numbersCount.value).fill(0))
+
   const generateTargetNumber = () => {
     targetNumbers.value = Array.from({ length: numbersCount.value }, () => Math.floor(Math.random() * DEFAULT_NUMBERS_RANGE))
   };
@@ -27,6 +28,7 @@ export const useNumbers = () => {
     const numbers = Array.from({ length: rangeLength }, (_,index) => stop - index * step)
     return [0 , ...numbers]
   });
+
   const resetPickedNumbers = () => {
     pickedNumbers.value = Array(numbersCount.value).fill(0)
   }
@@ -35,6 +37,8 @@ export const useNumbers = () => {
     if ((+count < 1) || (+count > 10)) return
     numbersCount.value = +count
   }
+
+const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].points >= numbersCount.value))
 
   return {
     numbersCount,
@@ -50,6 +54,7 @@ export const useNumbers = () => {
     generateTargetNumber,
     numbersRange,
     resetPickedNumbers,
-    setNumbersCount
+    setNumbersCount,
+    isWin
   }
 }

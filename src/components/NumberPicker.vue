@@ -65,6 +65,7 @@ const onSlideClick = (number: number, index: number) => {
           <img
             src="../assets/icons/play.svg"
             class="number-picker__submit-icon"
+            alt="icon"
           >
         </button>
       </template>
@@ -87,6 +88,7 @@ const onSlideClick = (number: number, index: number) => {
 }
 
 .swiper-slide {
+  font-size: 0.2em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,7 +96,7 @@ const onSlideClick = (number: number, index: number) => {
   transition: opacity 0.3s ease-in-out, font-size 0.1s ease;
 
   &-prev, &-next {
-    font-size: 1rem;
+    font-size: 0.6em;
     opacity: 0.5;
   }
   &-active {

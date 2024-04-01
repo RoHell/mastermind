@@ -111,6 +111,7 @@ onBeforeUnmount(() => document.removeEventListener('resize', setFontSize))
     height: 100%;
     max-width: var(--number-box-height);
     max-height: var(--number-box-height);
+    font-size: 1.5em;
   }
 }
 /* Chrome, Safari, Edge, Opera */

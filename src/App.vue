@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import TopBar from './components/TopBar.vue'
 import NumberHits from './components/NumberHits.vue'
 import NumberPicker from './components/NumberPicker.vue'
-import WinAnimation from './components/WinAnimation.vue'
-import NumberTarget from './components/NumberTarget.vue'
 import MenuDrawer from './components/MenuDrawer.vue'
 
 import { useNumbers } from './composables'
@@ -21,14 +19,13 @@ const {
   resetPickedNumbers,
   generateTargetNumber,
   gameNumber,
+  isWin,
  } = useNumbers()
 
 const { vibrate } = useVibrate({ pattern: [300, 100, 300] })
 
 const hitResults = ref<number[]>(Array(numbersCount.value).fill(0))
 const isMenuDrawerOpen = ref(false)
-
-const isWin = computed(() => hitsList.value[0]?.points && (hitsList.value[0].points >= numbersCount.value))
 
 const startGame = () => {
   hitsList.value = []
@@ -68,6 +65,8 @@ const addResult = (hit: HitInterface) => {
   hitsList.value.unshift(hit)
   hitResults.value = Array(numbersCount.value).fill(0)
 }
+
+generateTargetNumber()
 </script>
 
 <template>
@@ -83,6 +82,7 @@ const addResult = (hit: HitInterface) => {
             src="./assets/icons/reload.svg"
             width="18"
             height="18"
+            alt="reload icon"
           />
         </button>
       </template>
@@ -101,6 +101,7 @@ const addResult = (hit: HitInterface) => {
             src="./assets/icons/more.svg"
             width="24"
             height="24"
+            alt="three dots icon"
           />
         </button>
       </template>
@@ -109,7 +110,6 @@ const addResult = (hit: HitInterface) => {
 
   <main>
     <TransitionGroup
-      v-if="targetNumbers.length"
       name="list"
       appear
       mode="out-in"
@@ -128,6 +128,7 @@ const addResult = (hit: HitInterface) => {
           :key="hitsList.length - index"
           :hit="hit"
           :round="hitsList.length - index"
+          :index="index"
         />
       </TransitionGroup>
 
@@ -139,8 +140,11 @@ const addResult = (hit: HitInterface) => {
         class="mastermind__target-picker"
       >
         <div class="mastermind__win" v-if="isWin">
-          <NumberTarget />
-          <WinAnimation />
+          <button
+            type="button"
+            class="mastermind__play"
+            @click="startGame"
+          >Play</button>
         </div>
         <NumberPicker
           v-else
@@ -149,14 +153,6 @@ const addResult = (hit: HitInterface) => {
         />
       </Transition>
     </TransitionGroup>
-    <div v-else class="mastermind__intro">
-      v 0.03
-      <button
-        type="button"
-        class="mastermind__play"
-        @click="startGame"
-      >Play</button>
-    </div>
   </main>
 
   <MenuDrawer
@@ -242,6 +238,7 @@ main {
   &__win {
     display: flex;
     justify-content: center;
+    align-items: center;
   }
 
   &__target-picker {
