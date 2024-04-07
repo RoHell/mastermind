@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
-import { useNumbers } from '../composables'
+import { useNumbers } from '../../composables'
+import BaseButton from '../atoms/BaseButton.vue';
 
-const emit = defineEmits(['close'])
-const { numbersCount, setNumbersCount, MIN, MAX } = useNumbers()
+const emit = defineEmits(['close', 'play'])
+const {
+  numbersCount,
+  setNumbersCount,
+  MIN,
+  MAX,
+  targetNumbers,
+  hitsList,
+  isWin,
+  
+} = useNumbers()
 
 const showContent = ref(false)
 
@@ -44,11 +54,8 @@ const onNumbersCountChange = (event: Event) => {
         </button>
         <form class="drawer__numbers-count">
           <label for="numbers-count">
-            numbers count
+            {{ `numbers count: ${numbersCount}` }}
           </label>
-          <span>
-            {{ numbersCount }}
-          </span>
           <input
             id="numbers-count"
             :value="numbersCount"
@@ -58,6 +65,12 @@ const onNumbersCountChange = (event: Event) => {
             @input="onNumbersCountChange"
           >
         </form>
+        <BaseButton
+          v-if="(targetNumbers.length && hitsList.length) || isWin"
+          label="Play again"
+          class="drawer__play-again"
+          @click="emit('play')"
+        />
       </div>
     </Transition>
   </div>
@@ -81,6 +94,7 @@ const onNumbersCountChange = (event: Event) => {
     position: fixed;
     display: flex;
     flex-direction: column;
+    gap:2rem;
     width: 100%;
     max-width: 18rem;
     right: 0;
@@ -92,12 +106,19 @@ const onNumbersCountChange = (event: Event) => {
 
   &__close {
     margin-left: auto;
-    margin-bottom: 2rem;
   }
 
   &__numbers-count {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: start;
+  }
+
+  &__play-again {
+    display: flex;
+    justify-content: center;
+    margin: auto;
   }
 
   .slide-right-enter-active,

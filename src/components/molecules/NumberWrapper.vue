@@ -86,7 +86,7 @@ onBeforeUnmount(() => document.removeEventListener('resize', setFontSize))
     justify-content: center;
     width: 100%;
     max-width: var(--number-box-height);
-    border: 1px solid;
+    border-radius: 0.2rem;
     box-sizing: border-box;
   }
 

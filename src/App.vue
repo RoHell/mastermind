@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import TopBar from './components/TopBar.vue'
-import NumberHits from './components/NumberHits.vue'
-import NumberPicker from './components/NumberPicker.vue'
-import MenuDrawer from './components/MenuDrawer.vue'
+import BaseButton from './components/atoms/BaseButton.vue'
+import TopBar from './components/molecules/TopBar.vue'
+import NumberHits from './components/organisms/NumberHits.vue'
+import NumberPicker from './components/organisms/NumberPicker.vue'
+import MenuDrawer from './components/organisms/MenuDrawer.vue'
 
 import { useNumbers } from './composables'
 import { HitInterface } from './types'
@@ -72,21 +73,6 @@ generateTargetNumber()
 <template>
   <header class="mastermind__header">
     <TopBar>
-      <template #left>
-        <button
-          v-if="(targetNumbers.length && hitsList.length) || isWin"
-          type="button"
-          @click="startGame"
-        >
-          <img
-            src="./assets/icons/reload.svg"
-            width="18"
-            height="18"
-            alt="reload icon"
-          />
-        </button>
-      </template>
-
       <span class="mastermind__logo">
         <b>Master</b>
         <i>mind</i>
@@ -128,7 +114,6 @@ generateTargetNumber()
           :key="hitsList.length - index"
           :hit="hit"
           :round="hitsList.length - index"
-          :index="index"
         />
       </TransitionGroup>
 
@@ -140,11 +125,10 @@ generateTargetNumber()
         class="mastermind__target-picker"
       >
         <div class="mastermind__win" v-if="isWin">
-          <button
-            type="button"
-            class="mastermind__play"
+          <BaseButton
+            label="Play again"
             @click="startGame"
-          >Play</button>
+          />
         </div>
         <NumberPicker
           v-else
@@ -159,6 +143,7 @@ generateTargetNumber()
     v-if="isMenuDrawerOpen"
     @close="isMenuDrawerOpen = false"
     @change="startGame"
+    @play="startGame"
   />
 </template>
 
@@ -207,22 +192,8 @@ main {
     margin-top: auto;
     margin-bottom: calc(var(--number-box-height) * -1);
     overflow: auto;
-    padding: 0.5rem 0 0;
+    padding: 0.5rem 0 0.2rem;
     width: 100%;
-  }
-
-  &__intro {
-    margin: auto;
-  }
-
-  &__play {
-    border-radius: 8px;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: var(--text-color);
-    color: var(--background-color);
   }
 
   &__logo {

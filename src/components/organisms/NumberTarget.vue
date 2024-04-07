@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import NumberWrapper from './NumberWrapper.vue'
+import NumberWrapper from '../molecules/NumberWrapper.vue'
 
-import { useNumbers } from '../composables'
+import { useNumbers } from '../../composables'
 
 const { targetNumbers } = useNumbers()
 </script>

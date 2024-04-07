@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useNumbers } from '../composables'
+import { useNumbers } from '../../composables'
 
-import NumberWrapper from './NumberWrapper.vue'
+import NumberWrapper from '../molecules/NumberWrapper.vue'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
@@ -63,7 +63,7 @@ const onSlideClick = (number: number, index: number) => {
           @click="onSubmit"
         >
           <img
-            src="../assets/icons/play.svg"
+            src="../../assets/icons/play.svg"
             class="number-picker__submit-icon"
             alt="icon"
           >
@@ -113,7 +113,7 @@ const onSlideClick = (number: number, index: number) => {
     &:before, &:after {
       content: '';
       position: absolute;
-      border: 1px solid;
+      box-shadow: var(--box-shadow);
       width: 100%;
       aspect-ratio: 1;
     }
