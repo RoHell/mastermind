@@ -1,34 +1,18 @@
 <script setup lang="ts">
+import { HitInterface } from '../../types'
+
+import { useNumbers } from '../../composables/useNumbers'
+
 import NumberWrapper from '../molecules/NumberWrapper.vue'
-import { HitInterface } from '../../types';
-import { useNumbers } from '../../composables/useNumbers';
 
 interface Props {
   hit: HitInterface
   round: number
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
-const {
-  targetNumbers,
-  isWin,
-} = useNumbers()
-
-const isExactHitted = (index: number) => {
-  if (!isWin.value) return
-  return props.hit.numbers[index] === targetNumbers.value[index]
-}
-
-const isHalfHit = (index: number) => {
-  if (!isWin.value || isExactHitted(index)) return
-  return targetNumbers.value.includes(props.hit.numbers[index])
-}
-
-const isMissHit = (index: number) => {
-  return isWin.value && !(isExactHitted(index) || isHalfHit(index))
-  // return !targetNumbers.value.includes(number)
-}
+const { isWin } = useNumbers()
 
 </script>
 
@@ -45,9 +29,9 @@ const isMissHit = (index: number) => {
         disabled
         class="number-hits__number"
         :class="{
-          'number-hits__number--hitted': isExactHitted(index),
-          'number-hits__number--not-exact': isHalfHit(index),
-          'number-hits__number--missed': isMissHit(index),
+          'number-hits__number--hitted': isWin && hit.matchPoints[index] === 1,
+          'number-hits__number--not-exact': isWin && hit.matchPoints[index] === 0.5,
+          'number-hits__number--missed': isWin && hit.matchPoints[index] === 0,
         }"
       />
     </template>

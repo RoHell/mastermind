@@ -8,24 +8,18 @@ import NumberPicker from './components/organisms/NumberPicker.vue'
 import MenuDrawer from './components/organisms/MenuDrawer.vue'
 
 import { useNumbers } from './composables'
-import { HitInterface } from './types'
-
-import { useVibrate } from '@vueuse/core'
 
 const {
   numbersCount,
   SLIDES_PER_VIEW,
   hitsList,
-  targetNumbers,
   resetPickedNumbers,
   generateTargetNumber,
   gameNumber,
   isWin,
+  calculatePoints,
  } = useNumbers()
 
-const { vibrate } = useVibrate({ pattern: [300, 100, 300] })
-
-const hitResults = ref<number[]>(Array(numbersCount.value).fill(0))
 const isMenuDrawerOpen = ref(false)
 
 const startGame = () => {
@@ -33,38 +27,6 @@ const startGame = () => {
   resetPickedNumbers()
   gameNumber.value++
   generateTargetNumber()
-}
-
-const calculatePoints = (pickedNumbers: number[]) => {
-  findExactHits(pickedNumbers)
-  findHalfHits(pickedNumbers)
-  
-  const points = hitResults.value.reduce((a, b) => a + b, 0)
-  addResult({ numbers: pickedNumbers, points})
-  if (isWin.value) vibrate()
-}
-
-const findExactHits = (pickedNumbers: number[]) => {
-  targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
-    if (targetNumber === pickedNumbers[targetIndex]) hitResults.value[targetIndex] = 1
-  })
-}
-
-const findHalfHits = (pickedNumbers: number[]) => {
-  targetNumbers.value?.forEach((targetNumber: number, targetIndex: number) => {
-    const pickIndex = pickedNumbers.findIndex((pickedNumber, pickedIndex) => {
-      const isMatch = pickedNumber === targetNumber
-      const isNotExactMatch = targetNumber !== pickedNumbers[targetIndex]
-      const isResultIndexFree = !hitResults.value[pickedIndex]
-      return isMatch && isNotExactMatch && isResultIndexFree
-    })
-    if (pickIndex > -1) hitResults.value[pickIndex] = 0.5
-  })
-}
-
-const addResult = (hit: HitInterface) => {
-  hitsList.value.unshift(hit)
-  hitResults.value = Array(numbersCount.value).fill(0)
 }
 
 generateTargetNumber()
