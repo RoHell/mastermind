@@ -45,7 +45,7 @@ onBeforeUnmount(() => document.removeEventListener('resize', setFontSize))
           :number="number"
           :index="index"
         />
-    </div>
+      </div>
     </div>
     <div class="number-wrapper__right">
       <slot name="right" />
@@ -88,6 +88,8 @@ onBeforeUnmount(() => document.removeEventListener('resize', setFontSize))
     max-width: var(--number-box-height);
     border-radius: 0.2rem;
     box-sizing: border-box;
+    background-color: transparent;
+    transition: background-color 0.3s ease-in-out;
   }
 
   &__left {

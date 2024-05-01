@@ -65,8 +65,7 @@ const { isWin } = useNumbers()
     }
 
     &:has(.number-hits__number--hit) {
-      box-shadow: var(--box-shadow-inset);
-      background: white;
+      background-color: white;
     }
 
     &:has(.number-hits__number--missed) {
