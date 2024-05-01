@@ -29,7 +29,7 @@ export const useNumbers = () => {
   };
 
   const numbersRange = computed(() => {
-    const start = 1
+    const start = MIN
     const stop = MAX
     const step = 1
     const rangeLength = (stop - start) / 1 + step

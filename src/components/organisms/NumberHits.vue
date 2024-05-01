@@ -29,8 +29,8 @@ const { isWin } = useNumbers()
         disabled
         class="number-hits__number"
         :class="{
-          'number-hits__number--hitted': isWin && hit.matchPoints[index] === 1,
-          'number-hits__number--not-exact': isWin && hit.matchPoints[index] === 0.5,
+          'number-hits__number--match number-hits__number--hit': isWin && hit.matchPoints[index] === 1,
+          'number-hits__number--match': isWin && hit.matchPoints[index] === 0.5,
           'number-hits__number--missed': isWin && hit.matchPoints[index] === 0,
         }"
       />
@@ -46,12 +46,8 @@ const { isWin } = useNumbers()
 .number-hits__number {
   box-sizing: border-box;
   color: var(--text-color);
-  &--hitted {
+  &--match {
     font-weight: 600;
-  }
-  &--not-exact {
-    font-weight: 600;
-    opacity: 0.6;
   }
   &--missed {
     opacity: 0.6;
@@ -64,8 +60,13 @@ const { isWin } = useNumbers()
     height: 100% !important;
     box-shadow: var(--box-shadow);
 
-    &:has(.number-hits__number--hitted) {
+    &:has(.number-hits__number--match) {
       box-shadow: var(--box-shadow-inset);
+    }
+
+    &:has(.number-hits__number--hit) {
+      box-shadow: var(--box-shadow-inset);
+      background: white;
     }
 
     &:has(.number-hits__number--missed) {
