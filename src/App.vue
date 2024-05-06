@@ -102,7 +102,7 @@ generateTargetNumber()
   </main>
 
   <MenuDrawer
-    v-if="isMenuDrawerOpen"
+    :show="isMenuDrawerOpen"
     @close="isMenuDrawerOpen = false"
     @change="startGame"
     @play="startGame"
