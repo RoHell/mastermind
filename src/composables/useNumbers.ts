@@ -78,6 +78,12 @@ export const useNumbers = () => {
     hitResults.value = Array(numbersCount.value).fill(0)
   }
 
+  const startGame = () => {
+    hitsList.value = []
+    resetPickedNumbers()
+    gameNumber.value++
+    generateTargetNumber()
+  }
 
   return {
     numbersCount,
@@ -97,5 +103,6 @@ export const useNumbers = () => {
     isWin,
     calculatePoints,
     hitResults,
+    startGame,
   }
 }

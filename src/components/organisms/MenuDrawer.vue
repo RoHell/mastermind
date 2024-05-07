@@ -9,7 +9,7 @@ interface Props {
 
 defineProps<Props>()
 
-const emit = defineEmits(['close', 'play'])
+const emit = defineEmits(['close'])
 
 const {
   numbersCount,
@@ -19,6 +19,7 @@ const {
   targetNumbers,
   hitsList,
   isWin,
+  startGame,
 } = useNumbers()
 
 const onClose = () => {
@@ -29,6 +30,7 @@ const onNumbersCountChange = (event: Event) => {
   const target = event.target as HTMLInputElement
   const count = +target?.value
   setNumbersCount(count)
+  startGame()
 }
 </script>
 
@@ -55,7 +57,7 @@ const onNumbersCountChange = (event: Event) => {
         v-if="(targetNumbers.length && hitsList.length) || isWin"
         label="Play again"
         class="menu-drawer__play-again"
-        @click="emit('play')"
+        @click="startGame"
       />
     </div>
   </Drawer>

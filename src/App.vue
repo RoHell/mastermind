@@ -13,21 +13,13 @@ const {
   numbersCount,
   SLIDES_PER_VIEW,
   hitsList,
-  resetPickedNumbers,
   generateTargetNumber,
-  gameNumber,
   isWin,
   calculatePoints,
+  startGame,
  } = useNumbers()
 
 const isMenuDrawerOpen = ref(false)
-
-const startGame = () => {
-  hitsList.value = []
-  resetPickedNumbers()
-  gameNumber.value++
-  generateTargetNumber()
-}
 
 generateTargetNumber()
 </script>
@@ -104,8 +96,6 @@ generateTargetNumber()
   <MenuDrawer
     :show="isMenuDrawerOpen"
     @close="isMenuDrawerOpen = false"
-    @change="startGame"
-    @play="startGame"
   />
 </template>
 
